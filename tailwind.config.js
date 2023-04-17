@@ -7,10 +7,13 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
-        vercel: {
+        qpay: {
           pink: "#FF0080",
           blue: "#0070F3",
           cyan: "#50E3C2",

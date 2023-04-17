@@ -14,7 +14,7 @@ export default async function Restaurant() {
     <div className="">
       {/*@ts-expect-error Server Components :(        */}
       <Heading
-        title={"Add Product"}
+        title={"Add Category"}
         icon={<PlusCircleIcon className="h-6 w-6" />}
       />
       <Suspense fallback={<Loading />}>

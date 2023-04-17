@@ -1,6 +1,6 @@
 import prisma from "@/utils/prisma"
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   const { userid } = req.query
   try {
     const orders = await prisma.restaurant.findUnique({

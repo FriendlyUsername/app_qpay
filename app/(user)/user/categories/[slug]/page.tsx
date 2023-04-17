@@ -6,30 +6,47 @@ import { AddFoodForm } from "@/app/_components/AddFoodForm"
 import { currentUser } from "@clerk/nextjs/app-beta"
 import prisma from "@/utils/prisma"
 import { CategoryForm } from "@/app/_components/CategoryForm"
-type CategoryReturn = "No user found" | Category | "No category found" | null
-const ShowCategory = ({ category }: { category: CategoryReturn }) => {
-  if (category === "No user found") return <div>not logged in</div>
-  if (category === "No category found" || category === null)
-    return <div>no Product found go create one :)</div>
-  console.log(category, "logging foof from ShowFood")
-
-  return <CategoryForm method="update" category={category} />
+import Link from "next/link"
+type CategoryReturn =
+  | "No user found"
+  | "No category found"
+  | {
+      categories: Category[]
+    }
+  | null
+const ShowCategory = ({
+  category,
+}: {
+  category: {
+    categories: Category[]
+  }
+}) => {
+  return <CategoryForm method="update" category={category?.categories[0]} />
 }
 
 export default async function Category({ params }: { params: any }) {
   const category: CategoryReturn = await getCategory(params)
+
+  if (category === "No user found") return <div>not logged in</div>
+  if (
+    category === "No category found" ||
+    category === null ||
+    category.categories.length === 0
+  )
+    return (
+      <div>
+        no Category found{" "}
+        <Link href={"/user/addcategory"}> go create one :)</Link>
+      </div>
+    )
+
   return (
     <div className="">
       {/*@ts-expect-error Server Components :(        */}
-      <Heading title={`Edit ${category.name}`} />
-      {/* <Suspense fallback={<Loading />}> */}
-      {/* {!restaurant && <RestaurantForm method="create" />}
-        {restaurant && (
-          <RestaurantForm restaurant={restaurant} method="update" />
-        )} */}
-      {/* <ProductsGrid /> */}
-      <ShowCategory category={category} />
-      {/* </Suspense> */}
+      <Heading title={`Edit ${category?.categories[0]?.name}`} />
+      <Suspense fallback={<Loading />}>
+        <ShowCategory category={category} />
+      </Suspense>
     </div>
   )
 }
@@ -38,10 +55,16 @@ async function getCategory(params: { slug: string }) {
   const user = await currentUser()
   if (!user) return "No user found"
   try {
-    const data = await prisma.category.findFirst({
+    const data = await prisma.restaurant.findFirst({
       where: {
-        id: parseInt(params.slug),
-        restaurant_id: user.id,
+        user_id: user.id,
+      },
+      select: {
+        categories: {
+          where: {
+            id: parseInt(params.slug),
+          },
+        },
       },
     })
     return data

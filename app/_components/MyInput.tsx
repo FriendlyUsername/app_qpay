@@ -17,7 +17,7 @@ export const MyInput = (props: MyInputProps) => {
   console.log(props.errors, "default value")
   return (
     <>
-      <div className={"pb-4" + (props.hidden ? " hidden" : "")}>
+      <div className={"pb-4 max-w-md" + (props.hidden ? " hidden" : "")}>
         <label
           htmlFor={props.name}
           className={"text-lg  font-medium leading-6"}
@@ -28,10 +28,10 @@ export const MyInput = (props: MyInputProps) => {
           {...props.register(props.name, registerArgument)}
           name={props.name}
           className={
-            "bg-transparent w-full rounded-md border-0 py-1.5 ring-gray-300 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6" +
+            "block  py-2 w-full rounded-full border-none bg-gray-600 pl-5 font-medium text-zinc-200 " +
             (props.errors[props.name]?.message
-              ? " ring-red-300 placeholder:text-red-300 focus:ring-red-500 text-red-100"
-              : " placeholder:text-gray-400")
+              ? " ring-red-300 placeholder:text-red-300 focus:ring-red-500 text-red-600"
+              : " placeholder:text-zinc-300 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2")
           }
           type={props.type || "text"}
           placeholder={props.name}

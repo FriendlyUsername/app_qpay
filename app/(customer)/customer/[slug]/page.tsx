@@ -1,22 +1,5 @@
 import CustomerForm from "@/app/_components/CustomerForm"
 import prisma from "@/utils/prisma"
-import type { Category, Food } from "@prisma/client"
-const NavBar = () => {
-  return (
-    <div className="flex flex-row justify-between pb-4">
-      <div>
-        <a href="/app/customer/customer/[slug]" className="text-white">
-          Home
-        </a>
-      </div>
-      <div>
-        <a href="/app/customer/customer/[slug]/cart" className="text-white">
-          Cart
-        </a>
-      </div>
-    </div>
-  )
-}
 
 export default async function Home(params: { params: { slug: string } }) {
   const restaurant = await getRestaurant(params)

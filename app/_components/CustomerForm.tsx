@@ -50,6 +50,7 @@ export default function CustomerForm({
   })
   const [foods, setFoods] = useState<Food[]>([])
   const router = useRouter()
+  // @ts-expect-error
   const { slug } = useParams()
   console.log(slug)
   if (!restaurant) return <div className="text-white">no restaurant found</div>

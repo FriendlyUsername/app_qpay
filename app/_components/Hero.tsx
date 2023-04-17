@@ -1,7 +1,6 @@
 "use client"
 import { Suspense, useState } from "react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
-// import { SignedIn, SignedOut } from "@clerk/nextjs/app-beta"
 import Loading from "../(user)/user/restaurant/loading"
 import Link from "next/link"
 import { Dialog } from "@headlessui/react"
@@ -11,14 +10,13 @@ import { HeroImage } from "./HeroImage"
 const navigation = [
   { name: "Features", href: "#features" },
   { name: "Mission", href: "#mission" },
-  //   { name: "Product", href: "#" },
 ]
 
 export default function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="bg-gray-900">
+    <div className="">
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           className="flex items-center justify-between p-6 lg:px-8"
@@ -27,7 +25,7 @@ export default function Hero() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <h2 className="text-white font-bold text-2xl">QRPAY</h2>
+              <h2 className="text-zinc-100 font-bold text-2xl">QRPAY</h2>
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -45,7 +43,7 @@ export default function Hero() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold leading-6 text-white hover:text-teal-300"
+                className="text-sm font-semibold leading-6 text-zinc-100 hover:text-teal-300"
               >
                 {item.name}
               </a>
@@ -53,18 +51,22 @@ export default function Hero() {
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {/* TODO PUT USER ICON HERE  */}
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            <a
+              href="#"
+              className="text-sm font-semibold leading-6 text-zinc-100"
+            >
               Log in <span aria-hidden="true">&rarr;</span>
             </a>
 
             <div className="flex items-center gap-4">
               {/* <SignedOut>
                 <MySignInButton />
-              </SignedOut>
-              <SignedIn> */}
+              </SignedOut> */}
+
+              {/* <SignedIn> */}
               {/* TODO: Make this fallback a skeleton with a profile picture since we know that much by now */}
               <Suspense fallback={<Loading />}>
-                <Link className="text-white" href="/user">
+                <Link className="text-zinc-100" href="/user">
                   Userpage
                 </Link>
               </Suspense>

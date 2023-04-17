@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <ClerkProvider appearance={{ baseTheme: dark }}>
-        <body className="bg-gray-900">
+        <body className="bg-black">
           {/* @ts-ignore  server component             */}
           <LayoutHelper>{children}</LayoutHelper>
         </body>

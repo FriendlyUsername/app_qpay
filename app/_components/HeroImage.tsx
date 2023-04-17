@@ -20,7 +20,8 @@ export const HeroImage = () => {
               Order ahead, skip the wait
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Revolutionize your restaurant's customer experience with our app
+              Revolutionize your restaurant`&apos;`s customer experience with
+              our app
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a

@@ -6,6 +6,7 @@ import { useState } from "react"
 import DeleteModal from "./DeleteModal"
 import { Toaster } from "react-hot-toast"
 import DeleteCategoryModal from "./DeleteCategoryModal"
+import { Ping } from "./Ping"
 
 export default function CategoryGridDisplay({
   categories,
@@ -20,7 +21,7 @@ export default function CategoryGridDisplay({
   const [blur, setBlur] = useState(false)
   return (
     <>
-      <div className="py-4">
+      <div className="py-4 ">
         <input
           type="text"
           onChange={(e) => {
@@ -31,7 +32,7 @@ export default function CategoryGridDisplay({
             })
             setFilteredCategories(filtered)
           }}
-          className="block w-full rounded-md border-0 bg-gray-700 py-1.5 pl-7 pr-3 text-gray-200 placeholder:text-gray-300  focus:text-gray-100 focus:ring-0 sm:text-lg sm:leading-6"
+          className="block max-w-md placeholder:text-zinc-300 py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
           placeholder="Search"
         />
       </div>
@@ -45,7 +46,7 @@ export default function CategoryGridDisplay({
         {filteredCategories.map((category) => (
           <li
             key={category.id}
-            className="col-span-1  divide-y flex flex-col divide-white rounded-lg  shadow border-white border-2"
+            className="col-span-1  divide-y flex flex-col divide-white rounded-lg  shadow border-qpay-cyan border-2"
           >
             <div className="flex w-full items-center justify-between space-x-6 p-6">
               <div className="flex-1 truncate">
@@ -58,16 +59,18 @@ export default function CategoryGridDisplay({
             </div>
             <div className="mt-auto">
               <div className="-mt-px flex divide-x divide-gray-200 uppercase ">
-                <div className="flex w-0 flex-1 text-teal-400">
+                <div className="flex w-0 flex-1 text-white">
                   <Link
                     href={`/user/categories/${category.id}`}
                     className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold "
                   >
-                    <PencilSquareIcon className="h-5 w-5 " aria-hidden="true" />
-                    Edit
+                    <div className="relative flex gap-2 items-center ">
+                      Edit
+                      <Ping status="pending" />
+                    </div>
                   </Link>
                 </div>
-                <div className="-ml-px flex w-0 flex-1 text-red-300 ">
+                <div className="-ml-px flex w-0 flex-1 text-white ">
                   <button
                     onClick={() => {
                       setOpen(true)
@@ -76,8 +79,10 @@ export default function CategoryGridDisplay({
                     }}
                     className="relative uppercase inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold "
                   >
-                    <TrashIcon className="h-5 w-5 " aria-hidden="true" />
-                    Delete
+                    <div className="relative flex gap-2 items-center ">
+                      Delete
+                      <Ping status="done" />
+                    </div>
                   </button>
                 </div>
               </div>

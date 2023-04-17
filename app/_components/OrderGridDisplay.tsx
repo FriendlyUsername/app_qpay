@@ -1,6 +1,10 @@
-// "use client"
+"use client"
 import { useUser } from "@clerk/nextjs"
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline"
+import {
+  MagnifyingGlassIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline"
 import type { Category, Food, Order } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
@@ -8,6 +12,9 @@ import { Toaster } from "react-hot-toast"
 import useSWR from "swr"
 import DeleteOrderModal from "./DeleteOrderModal"
 import OrderDetailsModal from "./OrderDetailsModal"
+import { Ping } from "./Ping"
+import { ArrowPathIcon } from "@heroicons/react/20/solid"
+//@ts-ignore
 const fetcher = (...args: any) => fetch(...args).then((res) => res.json())
 
 const status = ["pending", "in progress", "done"]
@@ -19,11 +26,12 @@ export default function OrderGridDisplay() {
   const [blur, setBlur] = useState(false)
   const user = useUser()
 
+  //  TODO dont auto refresh during search or filter
   const { data, error, mutate, isLoading } = useSWR(
     `/api/orders/${user?.user?.id}`,
     fetcher,
     {
-      refreshInterval: 13000,
+      refreshInterval: 3000,
       onSuccess: () => {
         setFilteredOrders(data?.orders || [])
       },
@@ -32,51 +40,74 @@ export default function OrderGridDisplay() {
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(
     data?.orders || []
   )
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error</div>
+  if (isLoading) return <div className="pt-4">Loading...</div>
+  if (error) return <div className="pt-4">Error</div>
 
   return (
     <>
       <div className="py-4">
-        <input
-          type="text"
-          onChange={(e) => {
-            const filtered = data?.orders.filter((order: Order) => {
-              return (
-                order.message
-                  .toLowerCase()
-                  .includes(e.target.value.toLowerCase()) ||
-                order.status
-                  .toLowerCase()
-                  .includes(e.target.value.toLowerCase())
-              )
-            })
-            setFilteredOrders(filtered)
-          }}
-          className="block w-full rounded-md border-0 bg-gray-700 py-1.5 pl-7 pr-3 text-gray-200 placeholder:text-gray-300  focus:text-gray-100 focus:ring-0 sm:text-lg sm:leading-6"
-          placeholder="Search"
-        />
+        <div className="relative flex-1 max-w-md ">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-300" />
+          </div>
+          <input
+            type="text"
+            onChange={(e) => {
+              const filtered = data?.orders.filter((order: Order) => {
+                return (
+                  order.message
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase()) ||
+                  order.status
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+                )
+              })
+              setFilteredOrders(filtered)
+            }}
+            className="block py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
+            placeholder="Search"
+          />
+        </div>
         <div className="pt-4 flex gap-4">
           {status.map((status) => {
             return (
-              <button
-                key={status}
-                onClick={() => {
-                  const filtered = data?.orders.filter((order: Order) => {
-                    return order.status === status
-                  })
-                  setFilteredOrders(filtered)
-                }}
-                className="bg-gray-700 text-white rounded-md px-3 py-1.5 text-sm font-medium"
-              >{`${status} (${
-                data?.orders.filter((order: Order) => order.status === status)
-                  .length
-              })`}</button>
+              <div key={status} className="flex relative">
+                <button
+                  key={status}
+                  onClick={() => {
+                    const filtered = data?.orders.filter((order: Order) => {
+                      return order.status === status
+                    })
+                    setFilteredOrders(filtered)
+                  }}
+                  className="bg-gray-600 relative text-white rounded-md px-3 py-1.5 text-sm font-medium"
+                >
+                  {`${status} (${
+                    data?.orders?.filter(
+                      (order: Order) => order.status === status
+                    ).length
+                  }) `}
+                </button>
+                <div className="absolute -top-1 -right-1">
+                  {status === "pending" && <Ping status="pending" />}
+
+                  {status === "in progress" && <Ping status="in progress" />}
+
+                  {status === "done" && <Ping status="done" />}
+                </div>
+              </div>
             )
           })}
         </div>
         <div>
-          <button onClick={() => mutate()}>refresh</button>
+          <button
+            className="bg-qpay-blue flex gap-1 align-center items-center text-white rounded-md px-3 py-1.5 text-sm font-medium mt-4"
+            onClick={() => mutate()}
+          >
+            <ArrowPathIcon className="h-4 w-4" />
+            <span>refresh</span>
+          </button>
         </div>
       </div>
       <ul
@@ -91,9 +122,9 @@ export default function OrderGridDisplay() {
             key={order.id}
             className={
               "col-span-1  divide-y flex flex-col divide-white rounded-lg  shadow  border-2" +
-              (order.status === "pending"
-                ? " border-green-400"
-                : " border-white ")
+              (order.status === "pending" ? " border-qpay-cyan" : "  ") +
+              (order.status === "in progress" ? " border-qpay-orange" : "  ") +
+              (order.status === "done" ? " border-qpay-violet" : "  ")
             }
           >
             <div className="flex w-full items-center justify-between space-x-6 p-6">

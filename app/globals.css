@@ -14,3 +14,7 @@ p,
 a {
   font-family: "Inter";
 }
+
+input:focus-visible {
+  outline: none;
+}

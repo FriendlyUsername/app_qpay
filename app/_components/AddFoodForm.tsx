@@ -125,11 +125,13 @@ export const AddFoodForm = (props: {
               placeholder="enter tag"
               className={
                 "bg-transparent w-1/4 pl-3 rounded-md border-0 py-1.5 ring-gray-300 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6" +
+                // @ts-ignore
                 (errors?.tags?.[index]?.tag.message
                   ? " ring-red-300 placeholder:text-red-300 focus:ring-red-500 text-red-100"
                   : " placeholder:text-gray-400")
               }
             />
+            {/*@ts-ignore  */}
             {errors?.tags?.[index]?.tag.message && (
               <div className={"relative mt-2 rounded-md shadow-sm"}>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -138,7 +140,9 @@ export const AddFoodForm = (props: {
                     aria-hidden="true"
                   />
                 </div>
+
                 <p className="mt-2 text-sm text-red-300" id="user-id-error">
+                  {/*@ts-ignore  */}
                   {errors?.tags?.[index]?.tag.message.toString()}
                 </p>
               </div>
