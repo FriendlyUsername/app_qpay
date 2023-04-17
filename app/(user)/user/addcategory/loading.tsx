@@ -4,7 +4,6 @@ export default function Loading() {
   return (
     <>
       <section className="blur-sm animate-pulse">
-        <h2 className="text-xl py-4">Create Restaurant</h2>
         <form method="post">
           <div className="pb-4">
             <label

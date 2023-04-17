@@ -9,11 +9,65 @@ generator client {
 }
 
 model Restaurant {
-  id      Int    @id @default(autoincrement())
-  user_id String @unique
-  name    String
-  address String
-  city    String
-  state   String
-  zip     String
+  id         Int        @id @default(autoincrement())
+  user_id    String     @unique
+  name       String
+  address    String
+  city       String
+  state      String
+  zip        String
+  foods      Food[]
+  categories Category[]
+  tags       Tag[]
+  orders     Order[]
+
+  @@index([user_id])
+}
+
+model Order {
+  id           Int        @id @default(autoincrement())
+  restaurantId Int
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  foods        Food[]
+  message      String
+  status       String
+
+  @@index([restaurantId])
+}
+
+model Category {
+  id           Int        @id @default(autoincrement())
+  name         String
+  Food         Food[]
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+
+  @@index([restaurantId])
+}
+
+model Food {
+  id           Int         @id @default(autoincrement())
+  name         String
+  price        String
+  description  String
+  category     Category?   @relation(fields: [categoryId], references: [id])
+  tags         Tag[]
+  categoryId   Int?
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+  Order        Order?      @relation(fields: [orderId], references: [id])
+  orderId      Int?
+
+  @@index([restaurantId])
+}
+
+model Tag {
+  id           Int        @id @default(autoincrement())
+  tag          String
+  Food         Food?      @relation(fields: [foodId], references: [id])
+  foodId       Int?
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+
+  @@index([restaurantId])
 }

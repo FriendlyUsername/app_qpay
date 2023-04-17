@@ -1,6 +1,4 @@
 import "@/app/globals.css"
-import { ClerkProvider } from "@clerk/nextjs/app-beta"
-import { dark } from "@clerk/themes"
 
 import { Inter, Montserrat } from "next/font/google"
 
@@ -29,9 +27,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${montserrat.variable} h-full`}
     >
-      <ClerkProvider appearance={{ baseTheme: dark }}>
-        <body className="h-full bg-black">{children}</body>
-      </ClerkProvider>
+      <body className="h-full bg-gray-900">{children}</body>
     </html>
   )
 }
