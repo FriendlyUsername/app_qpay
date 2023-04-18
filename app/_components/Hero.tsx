@@ -51,25 +51,26 @@ export default function Hero() {
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {/* TODO PUT USER ICON HERE  */}
-            <a
+            {/* <a
               href="#"
               className="text-sm font-semibold leading-6 text-zinc-100"
             >
               Log in <span aria-hidden="true">&rarr;</span>
-            </a>
+            </a> */}
 
             <div className="flex items-center gap-4">
+              <div className="text-white">
+                <SignInButton />
+              </div>
               {/* <SignedOut>
                 <MySignInButton />
               </SignedOut> */}
 
               {/* <SignedIn> */}
               {/* TODO: Make this fallback a skeleton with a profile picture since we know that much by now */}
-              <Suspense fallback={<Loading />}>
-                <Link className="text-zinc-100" href="/user">
-                  Userpage
-                </Link>
-              </Suspense>
+              <Link className="text-zinc-100" href="/user">
+                Userpage
+              </Link>
               {/* </SignedIn> */}
             </div>
           </div>
