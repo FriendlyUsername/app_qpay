@@ -13,7 +13,7 @@ This is a web application that allows restaurant owners to manage their menu ite
 
 ## Demo
 
-[link](https://app-qpay.vercel.app)
+[https://app-qpay.vercel.app](https://app-qpay.vercel.app)
 
 ## TODOS
 
