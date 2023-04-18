@@ -1,12 +1,7 @@
 "use client"
 import { useUser } from "@clerk/nextjs"
-import {
-  MagnifyingGlassIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline"
-import type { Category, Food, Order } from "@prisma/client"
-import Link from "next/link"
+import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline"
+import type { Order } from "@prisma/client"
 import { useState } from "react"
 import { Toaster } from "react-hot-toast"
 import useSWR from "swr"
@@ -14,6 +9,7 @@ import DeleteOrderModal from "./DeleteOrderModal"
 import OrderDetailsModal from "./OrderDetailsModal"
 import { Ping } from "./Ping"
 import { ArrowPathIcon } from "@heroicons/react/20/solid"
+import Loading from "../(user)/user/products/loading"
 //@ts-ignore
 const fetcher = (...args: any) => fetch(...args).then((res) => res.json())
 
@@ -40,7 +36,7 @@ export default function OrderGridDisplay() {
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(
     data?.orders || []
   )
-  if (isLoading) return <div className="pt-4">Loading...</div>
+  if (isLoading) return <Loading />
   if (error) return <div className="pt-4">Error</div>
 
   return (
@@ -138,7 +134,7 @@ export default function OrderGridDisplay() {
             </div>
             <div className="mt-auto">
               <div className="-mt-px flex divide-x divide-gray-200 uppercase ">
-                <div className="flex w-0 flex-1 text-teal-400">
+                <div className="flex w-0 flex-1 text-white">
                   <button
                     onClick={() => {
                       setOpenDetails(true)
@@ -146,11 +142,11 @@ export default function OrderGridDisplay() {
                     }}
                     className="relative uppercase inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold "
                   >
-                    <TrashIcon className="h-5 w-5 " aria-hidden="true" />
                     Edit
+                    <Ping status="pending" />
                   </button>
                 </div>
-                <div className="-ml-px flex w-0 flex-1 text-red-300 ">
+                <div className="-ml-px flex w-0 flex-1 text-white ">
                   <button
                     onClick={() => {
                       setOpendelete(true)
@@ -158,8 +154,8 @@ export default function OrderGridDisplay() {
                     }}
                     className="relative uppercase inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold "
                   >
-                    <TrashIcon className="h-5 w-5 " aria-hidden="true" />
                     Delete
+                    <Ping status="error" />
                   </button>
                 </div>
               </div>

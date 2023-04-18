@@ -26,7 +26,7 @@ This is a web application that allows restaurant owners to manage their menu ite
 
 To install the application, clone the repository to your local machine and run the following command:
 
-npm install
+    npm install
 
 This will install all required dependencies.
 
@@ -36,6 +36,6 @@ To use the application, you will need to create a Clerk account and obtain your 
 
 Once you have set up your environment, run the following command to start the application:
 
-npm dev
+    npm dev
 
 This will start the application on port 3000. You can access the site by navigating to `http://localhost:3000/`.

@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from "zod"
 import { MyInput } from "./MyInput"
-import { Food } from "@prisma/client"
 
 const deleteSchema = z.object({
   id: z.string().min(1).max(50),

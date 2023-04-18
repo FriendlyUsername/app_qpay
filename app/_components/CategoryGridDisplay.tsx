@@ -1,5 +1,9 @@
 "use client"
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline"
+import {
+  MagnifyingGlassIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline"
 import { Category, Food } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
@@ -22,19 +26,24 @@ export default function CategoryGridDisplay({
   return (
     <>
       <div className="py-4 ">
-        <input
-          type="text"
-          onChange={(e) => {
-            const filtered = categories.filter((category) => {
-              return category.name
-                .toLowerCase()
-                .includes(e.target.value.toLowerCase())
-            })
-            setFilteredCategories(filtered)
-          }}
-          className="block max-w-md placeholder:text-zinc-300 py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
-          placeholder="Search"
-        />
+        <div className="relative flex-1 max-w-md ">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-300" />
+          </div>
+          <input
+            type="text"
+            onChange={(e) => {
+              const filtered = categories.filter((category) => {
+                return category.name
+                  .toLowerCase()
+                  .includes(e.target.value.toLowerCase())
+              })
+              setFilteredCategories(filtered)
+            }}
+            className="block max-w-md placeholder:text-zinc-300 py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
+            placeholder="Search"
+          />
+        </div>
       </div>
       <ul
         role="list"

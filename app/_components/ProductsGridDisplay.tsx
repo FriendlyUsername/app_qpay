@@ -1,11 +1,11 @@
 "use client"
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline"
 import type { Food, Tag } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
 import DeleteModal from "./DeleteModal"
 import { Toaster } from "react-hot-toast"
 import { Ping } from "./Ping"
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid"
 const ProductTags = ({ product }: any) => {
   if (product.tags === undefined || product.tags.length === 0) return null
   return (
@@ -35,19 +35,24 @@ export default function ProductsGridDisplay({
   return (
     <>
       <div className="py-4">
-        <input
-          type="text"
-          onChange={(e) => {
-            const filtered = products.filter((product) => {
-              return product.name
-                .toLowerCase()
-                .includes(e.target.value.toLowerCase())
-            })
-            setFilteredProducts(filtered)
-          }}
-          className="block w-full rounded-md border-0 bg-gray-700 py-1.5 pl-7 pr-3 text-gray-200 placeholder:text-gray-300  focus:text-gray-100 focus:ring-0 sm:text-lg sm:leading-6"
-          placeholder="Search"
-        />
+        <div className="relative flex-1 max-w-md ">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-300" />
+          </div>
+          <input
+            type="text"
+            onChange={(e) => {
+              const filtered = products.filter((product) => {
+                return product.name
+                  .toLowerCase()
+                  .includes(e.target.value.toLowerCase())
+              })
+              setFilteredProducts(filtered)
+            }}
+            className=" max-w-md block py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
+            placeholder="Search"
+          />
+        </div>
       </div>
       <ul
         role="list"
