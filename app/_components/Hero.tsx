@@ -68,8 +68,8 @@ export default function Hero() {
 
               {/* <SignedIn> */}
               {/* TODO: Make this fallback a skeleton with a profile picture since we know that much by now */}
-              <Link className="text-zinc-100" href="/user">
-                Userpage
+              <Link className="text-white" href="/user">
+                Dashboard
               </Link>
               {/* </SignedIn> */}
             </div>

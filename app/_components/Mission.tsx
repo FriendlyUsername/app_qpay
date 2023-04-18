@@ -43,10 +43,10 @@ export default function Mission() {
             </h3>
             <p className="mt-6 text-base leading-7 text-gray-300">
               At QRPAY, we believe that running a restaurant should be as smooth
-              and hassle-free as possible. That`&apos;`s why we&apos;ve
-              developed a platform that allows restaurant owners to manage their
-              menu, tables, and orders all in one place. Our goal is to provide
-              a seamless experience for both restaurant owners and their
+              and hassle-free as possible. That&apos;s why we&apos;ve developed
+              a platform that allows restaurant owners to manage their menu,
+              tables, and orders all in one place. Our goal is to provide a
+              seamless experience for both restaurant owners and their
               customers, so that everyone can focus on what really matters:
               delicious food and great service.
             </p>

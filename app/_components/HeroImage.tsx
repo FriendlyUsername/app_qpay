@@ -1,3 +1,5 @@
+import { SignInButton } from "@clerk/nextjs"
+
 export const HeroImage = () => {
   return (
     <div className="relative isolate pt-14">
@@ -20,31 +22,31 @@ export const HeroImage = () => {
               Order ahead, skip the wait
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Revolutionize your restaurant`&apos;`s customer experience with
-              our app
+              Revolutionize your restaurant&apos;s customer experience with our
+              app
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#"
-                className="rounded-md bg-teal-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                className="rounded-md bg-teal-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
-                Start free trial
+                <SignInButton>Start free trial</SignInButton>
               </a>
               <a
-                href="#"
+                href="#features"
                 className="text-sm font-semibold leading-6 text-white"
               >
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
-          <img
+          {/* <img
             src="https://images.unsplash.com/photo-1600147131759-880e94a6185f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2536&q=80"
             alt="App screenshot"
             width={2432}
             height={1442}
             className="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24"
-          />
+          /> */}
         </div>
       </div>
       <div

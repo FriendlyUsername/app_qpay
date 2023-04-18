@@ -12,12 +12,12 @@ export default async function Restaurant() {
 
   return (
     <div className="">
-      {/*@ts-expect-error Server Components :(        */}
-      <Heading
-        title={"Add Category"}
-        icon={<PlusCircleIcon className="h-6 w-6" />}
-      />
       <Suspense fallback={<Loading />}>
+        {/*@ts-expect-error Server Components :(        */}
+        <Heading
+          title={"Add Category"}
+          icon={<PlusCircleIcon className="h-6 w-6" />}
+        />
         <CategoryForm method="create" />
       </Suspense>
     </div>

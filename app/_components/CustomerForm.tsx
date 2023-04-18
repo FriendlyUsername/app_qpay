@@ -3,20 +3,21 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import type { Category, Food, Restaurant, Tag } from "@prisma/client"
 import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
-import { MyInput } from "./MyInput"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useParams, useRouter } from "next/navigation"
-const NavBar = () => {
+import { MyInput } from "./MyInput"
+const NavBar = ({ slug }: { slug: string }) => {
   return (
-    <div className="flex flex-row justify-between pb-4">
+    <div className="flex flex-row justify-between py-4">
       <div>
-        <a href="/app/customer/customer/[slug]" className="text-white">
+        <a href={`/app/customer/customer/${slug}`} className="text-white">
           Home
         </a>
       </div>
       <div>
-        <a href="/app/customer/customer/[slug]/cart" className="text-white">
+        {/*TODO link to actual cart  */}
+        <a href={`/app/customer/customer/${slug}/cart`} className="text-white">
           Cart
         </a>
       </div>
@@ -58,7 +59,6 @@ export default function CustomerForm({
   async function processForm(data: any) {
     console.log(data, "data from customer form")
     // TODO make this come from input
-    data.message = "great message"
     data.status = "pending"
     data.id = slug
     try {
@@ -81,31 +81,40 @@ export default function CustomerForm({
   }
   return (
     <div className="px-4 my-auto text-white flex flex-col">
-      <NavBar />
+      <NavBar slug={slug} />
       <div>
         <h2>Categories</h2>
-        {restaurant.categories.map((category: Category) => (
-          <div key={category.id}>
-            <h3>{category.name}</h3>
-          </div>
-        ))}
+        <div className="flex gap-4 text-white">
+          {restaurant.categories.map((category: Category) => (
+            <div key={category.id}>
+              <h3 className="">{category.name}</h3>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="pt-4">
         <form onSubmit={handleSubmit(processForm)}>
-          <h2>Products</h2>
+          <h2 className="text-2xl pb-4">Products</h2>
           {restaurant.foods.map((food: Food) => (
             <button
               type="button"
+              className="block pb-2"
               key={food.id}
               onClick={() => {
                 append(food)
                 setFoods([...foods, food])
               }}
             >
-              {food.name}
+              Product: {food.name} +
             </button>
           ))}
-          <p>foodscount : {foods.length}</p>
+          <p>Product count : {foods.length}</p>
+          <MyInput
+            register={register}
+            errors={errors}
+            hidden={false}
+            name="message"
+          />
           <button className="block" type="submit">
             submit
           </button>

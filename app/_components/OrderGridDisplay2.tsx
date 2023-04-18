@@ -2,7 +2,6 @@
 // TODO Make server search work smoothly
 import { TrashIcon } from "@heroicons/react/24/outline"
 import type { Order } from "@prisma/client"
-import Link from "next/link"
 import { OrderSearch } from "./OrderSearch"
 import { currentUser } from "@clerk/nextjs/app-beta"
 import prisma from "@/utils/prisma"

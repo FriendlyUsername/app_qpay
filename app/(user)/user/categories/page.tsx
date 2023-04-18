@@ -6,9 +6,9 @@ import { CategoryGrid } from "@/app/_components/CategoryGrid"
 export default async function Restaurant() {
   return (
     <div className="">
-      {/*@ts-expect-error Server Components :(        */}
-      <Heading title={"Categories"} />
       <Suspense fallback={<Loading />}>
+        {/* @ts-expect-error server components  */}
+        <Heading title={"Categories"} />
         {/* @ts-expect-error server components  */}
         <CategoryGrid />
       </Suspense>
