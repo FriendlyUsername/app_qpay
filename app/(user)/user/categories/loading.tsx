@@ -13,6 +13,8 @@ const OrderSkelet = () => {
 export default function Loading() {
   return (
     <>
+      {/*@ts-expect-error  */}
+      <Heading title="Categories" />
       <section className="">
         <div className="py-4">
           <div className="relative flex-1 max-w-md ">

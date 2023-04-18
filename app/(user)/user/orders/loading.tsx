@@ -1,3 +1,4 @@
+import Heading from "@/app/_components/Heading"
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid"
 
 const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent`
@@ -12,6 +13,8 @@ const OrderSkelet = () => {
 export default function Loading() {
   return (
     <>
+      {/*@ts-expect-error  */}
+      <Heading title="Orders" />
       <section className="">
         <div className="py-4">
           <div className="relative flex-1 max-w-md ">

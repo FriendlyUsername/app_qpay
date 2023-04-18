@@ -3,7 +3,9 @@ import Heading from "@/app/_components/Heading"
 export default function Loading() {
   return (
     <>
-      <section className="blur-sm animate-pulse">
+      {/*@ts-expect-error  */}
+      <Heading title="Add Category" />
+      <section className="blur-sm animate-pulse pt-4">
         <form method="post">
           <div className="pb-4">
             <label
