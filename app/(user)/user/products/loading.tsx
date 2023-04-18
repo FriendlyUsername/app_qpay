@@ -1,95 +1,35 @@
-import Heading from "@/app/_components/Heading"
+const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent`
 
+const OrderSkelet = () => {
+  return (
+    <div className="col-span-1  divide-y flex flex-col divide-zinc-50 rounded-lg  shadow border-zinc-300 border-2">
+      <div className={`relative h-[167px] rounded-xl bg-black ${shimmer}`} />
+    </div>
+  )
+}
 export default function Loading() {
   return (
     <>
-      <section className="blur-sm animate-pulse">
-        <form method="post">
-          <div className="pb-4">
-            <label
-              htmlFor="user_id"
-              className="block text-lg pb-4 font-medium leading-6 "
-            >
-              NAME
-            </label>
-            <input
-              name="user_id"
-              className={
-                "block bg-transparent ring-zinc-300  w-full rounded-md border-0 py-1.5 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-              }
-              type="text"
-              placeholder={"user_id"}
-            />
-          </div>
-
-          <div className="pb-4">
-            <label
-              htmlFor="user_id"
-              className="block text-lg pb-4 font-medium leading-6 "
-            >
-              NAME
-            </label>
-            <input
-              name="user_id"
-              className={
-                "block bg-transparent ring-gray-300  w-full rounded-md border-0 py-1.5 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-              }
-              type="text"
-              placeholder={"user_id"}
-            />
-          </div>
-
-          <div className="pb-4">
-            <label
-              htmlFor="user_id"
-              className="block text-lg pb-4 font-medium leading-6 "
-            >
-              NAME
-            </label>
-            <input
-              name="user_id"
-              className={
-                "block bg-transparent ring-gray-300  w-full rounded-md border-0 py-1.5 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-              }
-              type="text"
-              placeholder={"user_id"}
-            />
-          </div>
-
-          <div className="pb-4">
-            <label
-              htmlFor="user_id"
-              className="block text-lg pb-4 font-medium leading-6 "
-            >
-              NAME
-            </label>
-            <input
-              name="user_id"
-              className={
-                "block bg-transparent ring-gray-300  w-full rounded-md border-0 py-1.5 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-              }
-              type="text"
-              placeholder={"user_id"}
-            />
-          </div>
-
-          <div className="pb-4">
-            <label
-              htmlFor="user_id"
-              className="block text-lg pb-4 font-medium leading-6 "
-            >
-              NAME
-            </label>
-            <input
-              name="user_id"
-              className={
-                "block bg-transparent ring-gray-300  w-full rounded-md border-0 py-1.5 pr-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-              }
-              type="text"
-              placeholder={"user_id"}
-            />
-          </div>
-        </form>
+      <section className="">
+        <div className="py-4">
+          <input
+            type="text"
+            className="block py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
+            placeholder="Search"
+          />
+        </div>
+        <ul
+          role="list"
+          className={
+            "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 text-zinc-100 "
+          }
+        >
+          {Array(12)
+            .fill("loop")
+            .map((e, i) => (
+              <OrderSkelet key={i} />
+            ))}
+        </ul>
       </section>
     </>
   )

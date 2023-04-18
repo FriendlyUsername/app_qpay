@@ -1,5 +1,5 @@
 type PingProps = {
-  status: "pending" | "in progress" | "done"
+  status: "pending" | "in progress" | "done" | "error"
 }
 export function Ping(props: PingProps) {
   return (
@@ -17,7 +17,8 @@ export function Ping(props: PingProps) {
           `relative inline-flex h-[11px] w-[11px] rounded-full bg-qpay-cyan ` +
           (props.status === "pending" ? " bg-qpay-cyan" : "") +
           (props.status === "in progress" ? " bg-qpay-orange" : "") +
-          (props.status === "done" ? " bg-qpay-violet" : "")
+          (props.status === "done" ? " bg-qpay-violet" : "") +
+          (props.status === "error" ? " bg-qpay-red" : "")
         }
       ></span>
     </span>

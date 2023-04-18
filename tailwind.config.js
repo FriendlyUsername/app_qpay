@@ -19,6 +19,7 @@ module.exports = {
           cyan: "#50E3C2",
           orange: "#F5A623",
           violet: "#7928CA",
+          red: "#FF0000",
         },
       },
       backgroundImage: {
@@ -30,6 +31,13 @@ module.exports = {
         inter: ["var(--font-inter)"],
         montserrat: ["var(--font-montserrat)"],
       },
+      keyframes: ({ theme }) => ({
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
+      }),
     },
   },
   plugins: [

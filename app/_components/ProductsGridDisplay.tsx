@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import DeleteModal from "./DeleteModal"
 import { Toaster } from "react-hot-toast"
+import { Ping } from "./Ping"
 const ProductTags = ({ product }: any) => {
   if (product.tags === undefined || product.tags.length === 0) return null
   return (
@@ -76,26 +77,26 @@ export default function ProductsGridDisplay({
             </div>
             <div className="mt-auto">
               <div className="-mt-px flex divide-x divide-zinc-200 uppercase ">
-                <div className="flex w-0 flex-1 text-teal-400">
+                <div className="flex w-0 flex-1 text-white">
                   <Link
                     href={`/user/products/${product.id}`}
                     className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold "
                   >
-                    <PencilSquareIcon className="h-5 w-5 " aria-hidden="true" />
                     Edit
+                    <Ping status="pending" />
                   </Link>
                 </div>
-                <div className="-ml-px flex w-0 flex-1 text-red-300 ">
+                <div className="-ml-px flex w-0 flex-1 text-white ">
                   <button
                     onClick={() => {
                       setOpen(true)
                       setName(product.name)
                       setId(product.id)
                     }}
-                    className="relative uppercase inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold "
+                    className="uppercase inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold "
                   >
-                    <TrashIcon className="h-5 w-5 " aria-hidden="true" />
                     Delete
+                    <Ping status="error" />
                   </button>
                 </div>
               </div>
