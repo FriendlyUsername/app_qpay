@@ -8,10 +8,19 @@ This is a web application that allows restaurant owners to manage their menu ite
 - Form validation : zod
 - Database management: Prisma
 - Styling: Tailwind CSS
+- hosting: Vercel
+- Database: MySQL by PlanetScale
 
 ## Demo
 
 `https://app-qpay.vercel.app/`
+
+## TODOS
+
+- [ ] Add customer order cart
+- [ ] Add user order history
+- [ ] Add payment
+- [ ] Add picture upload for products to cloudinary
 
 ## Installation
 
