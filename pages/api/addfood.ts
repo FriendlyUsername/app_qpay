@@ -24,6 +24,7 @@ export default async function handler(
             name: food.name,
             price: food.price.toString(),
             description: food.description,
+            img: "https://picsum.photos/200/300?grayscale",
           },
         },
       },

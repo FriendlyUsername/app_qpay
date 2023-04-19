@@ -9,7 +9,7 @@ import DeleteOrderModal from "./DeleteOrderModal"
 import OrderDetailsModal from "./OrderDetailsModal"
 import { Ping } from "./Ping"
 import { ArrowPathIcon } from "@heroicons/react/20/solid"
-import Loading from "../(user)/user/products/loading"
+import Loading from "../(user)/user/orders/loading"
 //@ts-ignore
 const fetcher = (...args: any) => fetch(...args).then((res) => res.json())
 
@@ -19,15 +19,46 @@ export default function OrderGridDisplay() {
   const [opendetails, setOpenDetails] = useState(false)
   const [opendelete, setOpendelete] = useState(false)
   const [id, setId] = useState(0)
+  const [filterActive, setFilterActive] = useState(false)
   const [blur, setBlur] = useState(false)
+  const [statusFilterActive, setStatusFilterActive] = useState(false) // new state to track filter button status
+  const [activeFilter, setActiveFilter] = useState("") // new state to track active filter
   const user = useUser()
+
+  const handleStatusFilter = (status: string) => {
+    // TODO handle one active state into another active state
+    // if status already active disable filtering and set status to empty string
+    if (statusFilterActive && activeFilter === status) {
+      setStatusFilterActive(false)
+      setActiveFilter("")
+      setFilteredOrders(data?.orders || [])
+      return
+    }
+    const filtered = data?.orders.filter((order: Order) => {
+      return order.status.toLowerCase() === status.toLowerCase()
+    })
+    setStatusFilterActive(statusFilterActive ? false : true)
+    setFilteredOrders(filtered)
+    setActiveFilter(status)
+  }
+  const handleFilter = (e: any) => {
+    const filtered = data?.orders.filter((order: Order) => {
+      return (
+        order.message.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        order.status.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    })
+    setFilteredOrders(filtered)
+    setFilterActive(e.target.value !== "") // set filterActive to true if search input is not empty
+    setFilteredOrders(filtered)
+  }
 
   //  TODO dont auto refresh during search or filter
   const { data, error, mutate, isLoading } = useSWR(
     `/api/orders/${user?.user?.id}`,
     fetcher,
     {
-      refreshInterval: 3000,
+      refreshInterval: filterActive || statusFilterActive ? 0 : 100,
       onSuccess: () => {
         setFilteredOrders(data?.orders || [])
       },
@@ -36,7 +67,8 @@ export default function OrderGridDisplay() {
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(
     data?.orders || []
   )
-  if (isLoading) return <Loading />
+
+  if (isLoading) return <Loading titleLoaded={true} />
   if (error) return <div className="pt-4">Error</div>
 
   return (
@@ -48,36 +80,24 @@ export default function OrderGridDisplay() {
           </div>
           <input
             type="text"
-            onChange={(e) => {
-              const filtered = data?.orders.filter((order: Order) => {
-                return (
-                  order.message
-                    .toLowerCase()
-                    .includes(e.target.value.toLowerCase()) ||
-                  order.status
-                    .toLowerCase()
-                    .includes(e.target.value.toLowerCase())
-                )
-              })
-              setFilteredOrders(filtered)
-            }}
+            onChange={handleFilter}
             className="block py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
             placeholder="Search"
           />
         </div>
-        <div className="pt-4 flex gap-4">
+        <div className="pt-4 flex gap-4 max-w-xl">
           {status.map((status) => {
             return (
               <div key={status} className="flex relative">
                 <button
                   key={status}
-                  onClick={() => {
-                    const filtered = data?.orders.filter((order: Order) => {
-                      return order.status === status
-                    })
-                    setFilteredOrders(filtered)
-                  }}
-                  className="bg-gray-600 relative text-white rounded-md px-3 py-1.5 text-sm font-medium"
+                  onClick={() => handleStatusFilter(status)}
+                  className={
+                    `bg-gray-600 relative text-white rounded-md px-3 py-1.5 text-sm font-medium` +
+                    (activeFilter === status
+                      ? " border-2 border-qpay-pink"
+                      : "")
+                  }
                 >
                   {`${status} (${
                     data?.orders?.filter(
@@ -95,15 +115,21 @@ export default function OrderGridDisplay() {
               </div>
             )
           })}
-        </div>
-        <div>
-          <button
-            className="bg-qpay-blue flex gap-1 align-center items-center text-white rounded-md px-3 py-1.5 text-sm font-medium mt-4"
-            onClick={() => mutate()}
-          >
-            <ArrowPathIcon className="h-4 w-4" />
-            <span>refresh</span>
-          </button>
+
+          <div>
+            <button
+              className="bg-qpay-blue flex gap-1 align-center items-center text-white rounded-md px-3 py-1.5 text-sm font-medium "
+              onClick={() => {
+                // disable filter and status filter
+                setActiveFilter("")
+                setStatusFilterActive(false)
+                mutate()
+              }}
+            >
+              <ArrowPathIcon className="h-4 w-4" />
+              <span>refresh</span>
+            </button>
+          </div>
         </div>
       </div>
       <ul

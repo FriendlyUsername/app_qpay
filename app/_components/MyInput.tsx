@@ -18,6 +18,7 @@ export const MyInput = (props: MyInputProps) => {
   return (
     <>
       <div className={"pb-4 max-w-md" + (props.hidden ? " hidden" : "")}>
+        {" "}
         <label
           htmlFor={props.name}
           className={"text-lg  font-medium leading-6"}
@@ -37,7 +38,6 @@ export const MyInput = (props: MyInputProps) => {
           placeholder={props.name}
           defaultValue={props.defaultValue || ""}
         />
-
         {props.errors[props.name]?.message && (
           <div className={"relative mt-2 rounded-md shadow-sm"}>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -53,5 +53,21 @@ export const MyInput = (props: MyInputProps) => {
         )}
       </div>
     </>
+  )
+}
+export const MyInputSkeleton = () => {
+  return (
+    <div className={"pb-4 max-w-md"}>
+      {" "}
+      <label className={"text-lg  font-medium leading-6"}>
+        <span className="pb-2 block"> Name</span>
+      </label>
+      <input
+        className={
+          "block  py-2 w-full rounded-full border-none bg-gray-600 pl-5 font-medium text-zinc-200 "
+        }
+        placeholder={"Name"}
+      />
+    </div>
   )
 }

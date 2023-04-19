@@ -6,7 +6,7 @@ const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:
 const OrderSkelet = () => {
   return (
     <div className="col-span-1  divide-y flex flex-col divide-zinc-50 rounded-lg  shadow border-zinc-300 border-2">
-      <div className={`relative h-[167px] rounded-xl bg-black ${shimmer}`} />
+      <div className={`relative h-[138px] rounded-xl bg-black ${shimmer}`} />
     </div>
   )
 }

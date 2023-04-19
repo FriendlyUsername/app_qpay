@@ -41,10 +41,10 @@ export const HeroImage = () => {
             </div>
           </div>
           {/* <img
-            src="https://images.unsplash.com/photo-1600147131759-880e94a6185f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2536&q=80"
+            src="https://picsum.photos/200/300?grayscale"
             alt="App screenshot"
             width={2432}
-            height={1442}
+            height={600}
             className="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24"
           /> */}
         </div>

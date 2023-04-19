@@ -3,9 +3,8 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
-import { Food } from "@prisma/client"
-import { useUser } from "@clerk/nextjs"
-import { MyInput } from "./MyInput"
+import type { Food } from "@prisma/client"
+import { MyInput, MyInputSkeleton } from "./MyInput"
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid"
 import toast, { Toaster } from "react-hot-toast"
 
@@ -77,7 +76,6 @@ export const AddFoodForm = (props: {
       reset()
     }
   }
-  const user = useUser()
 
   return (
     <section>
@@ -169,6 +167,45 @@ export const AddFoodForm = (props: {
               (isSubmitting ? " opacity-50 cursor-not-allowed" : "")
             }
             disabled={isSubmitting}
+          >
+            Save
+          </button>
+          <button type="button" className="text-sm font-semibold leading-6 ">
+            Cancel
+          </button>
+        </div>
+      </form>
+      <Toaster />
+    </section>
+  )
+}
+
+export const SkeletFoodForm = () => {
+  return (
+    <section className="animate-pulse blur-sm">
+      {/* <h2 className="text-xl py-4">
+        {props.method === "create" && "Create Food"}{" "}
+        {props.method === "update" && "Update Food"}
+      </h2> */}
+      <form method="post" className="pt-4">
+        <MyInputSkeleton />
+        <MyInputSkeleton />
+        <MyInputSkeleton />
+        <button
+          type="button"
+          className={
+            "rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+          }
+        >
+          Add Tag
+        </button>
+
+        <div className="mt-6 flex items-center justify-start gap-x-6">
+          <button
+            type="submit"
+            className={
+              "rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+            }
           >
             Save
           </button>

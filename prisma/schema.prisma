@@ -50,6 +50,7 @@ model Food {
   name         String
   price        String
   description  String
+  img          String?
   category     Category?   @relation(fields: [categoryId], references: [id])
   tags         Tag[]
   categoryId   Int?

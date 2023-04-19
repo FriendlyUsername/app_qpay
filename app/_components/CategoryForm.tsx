@@ -5,7 +5,7 @@ import * as z from "zod"
 import { useRouter } from "next/navigation"
 import type { Category } from "@prisma/client"
 import { useUser } from "@clerk/nextjs"
-import { MyInput } from "./MyInput"
+import { MyInput, MyInputSkeleton } from "./MyInput"
 import toast, { Toaster } from "react-hot-toast"
 
 const categorySchema = z.object({
@@ -94,7 +94,7 @@ export const CategoryForm = (props: {
           errors={errors}
         />
 
-        <div className="mt-6 flex items-center justify-start gap-x-6">
+        <div className="pt-4 flex items-center justify-start gap-x-6">
           <button
             type="submit"
             className={
@@ -111,6 +111,26 @@ export const CategoryForm = (props: {
         </div>
       </form>
       <Toaster />
+    </section>
+  )
+}
+export const AddCategorySkeleton = () => {
+  return (
+    <section>
+      <MyInputSkeleton />
+      <div className="pt-4 flex items-center justify-start gap-x-6">
+        <button
+          type="submit"
+          className={
+            "rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+          }
+        >
+          Save
+        </button>
+        <button type="button" className="text-sm font-semibold leading-6 ">
+          Cancel
+        </button>
+      </div>
     </section>
   )
 }

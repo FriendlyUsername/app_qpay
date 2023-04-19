@@ -7,6 +7,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import { useParams, useRouter } from "next/navigation"
 import { MyInput } from "./MyInput"
+import { CustomerFoodList } from "./CustomerGrid"
 const NavBar = ({ slug }: { slug: string }) => {
   return (
     <div className="flex flex-row justify-between py-4">
@@ -95,8 +96,9 @@ export default function CustomerForm({
       <div className="pt-4">
         <form onSubmit={handleSubmit(processForm)}>
           <h2 className="text-2xl pb-4">Products</h2>
-          {restaurant.foods.map((food: Food) => (
-            <button
+          {/*@ts-expect-error server component  */}
+          <CustomerFoodList foods={restaurant.foods} />
+          {/* {restaurant.foods.map((food: Food) => ( <button
               type="button"
               className="block pb-2"
               key={food.id}
@@ -107,7 +109,7 @@ export default function CustomerForm({
             >
               Product: {food.name} +
             </button>
-          ))}
+          ))} */}
           <p>Product count : {foods.length}</p>
           <MyInput
             register={register}
