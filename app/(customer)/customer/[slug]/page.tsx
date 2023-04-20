@@ -8,7 +8,7 @@ export default async function Home(params: { params: { slug: string } }) {
   return (
     <CustomerForm restaurant={restaurant}>
       {/*@ts-expect-error server comp  */}
-      <CustomerFoodList foods={restaurant.foods} tags={restaurant.tags} />
+      <CustomerFoodList foods={restaurant.foods} />
     </CustomerForm>
   )
 }

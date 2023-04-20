@@ -29,7 +29,7 @@ export const MyInput = (props: MyInputProps) => {
           {...props.register(props.name, registerArgument)}
           name={props.name}
           className={
-            "block  py-2 w-full rounded-full border-none bg-zinc-600 pl-5 font-medium text-zinc-200 " +
+            "block py-2 w-full rounded-full border-none bg-zinc-600 pl-5 font-medium text-zinc-200 " +
             (props.errors[props.name]?.message
               ? " ring-red-300 placeholder:text-red-300 focus:ring-red-500 text-red-600"
               : " placeholder:text-zinc-300 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2")

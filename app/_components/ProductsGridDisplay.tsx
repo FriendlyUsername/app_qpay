@@ -12,7 +12,7 @@ const ProductTags = ({ tags }: { tags: Tag[] }) => {
     <ul className="flex gap-2 flex-wrap pt-2">
       {tags.map((tag, ind) => (
         <li key={ind} className="text-xs font-medium  text-teal-200">
-          {tag.name}
+          {/* {tag.} */}
         </li>
       ))}
     </ul>
