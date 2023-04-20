@@ -27,7 +27,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${montserrat.variable} h-full`}
     >
-      <body className="h-full bg-gray-900">{children}</body>
+      <body className="h-full bg-black">{children}</body>
     </html>
   )
 }

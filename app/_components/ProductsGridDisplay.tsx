@@ -61,10 +61,10 @@ export default function ProductsGridDisplay({
           (blur ? " blur-sm" : "")
         }
       >
-        {filteredProducts.map((product) => (
+        {filteredProducts.map((product: Food) => (
           <li
             key={product.id}
-            className="col-span-1  divide-y flex flex-col divide-zinc-50 rounded-lg  shadow border-zinc-100 border-2"
+            className="col-span-1  divide-y flex flex-col divide-zinc-600 rounded-lg  shadow border-zinc-700 border-2"
           >
             <div className="flex w-full items-center justify-between space-x-6 p-6">
               <div className="flex-1 truncate">
@@ -81,7 +81,7 @@ export default function ProductsGridDisplay({
               </div>
             </div>
             <div className="mt-auto">
-              <div className="-mt-px flex divide-x divide-zinc-200 uppercase ">
+              <div className="-mt-px flex divide-x divide-zinc-600 uppercase ">
                 <div className="flex w-0 flex-1 text-white">
                   <Link
                     href={`/user/products/${product.id}`}

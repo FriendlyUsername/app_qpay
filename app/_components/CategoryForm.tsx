@@ -83,7 +83,7 @@ export const CategoryForm = (props: {
           hidden={false}
           register={register}
           name="name"
-          defaultValue={props.category?.name?.toString() || "name"}
+          defaultValue={props.category?.name?.toString() || ""}
           errors={errors}
         />
         <MyInput

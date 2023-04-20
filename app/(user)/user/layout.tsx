@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { UserButton } from "@clerk/nextjs/app-beta"
+import SideBarNavLink from "@/app/_components/SidebarNavLink"
 
 export default function UserLayout({
   children,
@@ -10,13 +11,13 @@ export default function UserLayout({
     <main className="flex h-full">
       <nav className="flex basis-1/6 gap-8 px-8 pt-8 text-white border-r-2 border-gray-700">
         <div className="flex flex-col gap-8 py-8">
-          <Link href={"/user/restaurant"}>Restaurant</Link>
-          <Link href={"/user/addproduct"}>Add Product</Link>
-          <Link href={"/user/addcategory"}>Add Category</Link>
-          <Link href={"/user/categories"}>Categories</Link>
-          <Link href={"/user/products"}>Products</Link>
-          <Link href={"/user/orders"}>Orders</Link>
-          <Link href={"/user/tables"}>Tables</Link>
+          <SideBarNavLink slug="restaurant">Restaurant</SideBarNavLink>
+          <SideBarNavLink slug="addproduct">Add Product</SideBarNavLink>
+          <SideBarNavLink slug="addcategory">Add Category</SideBarNavLink>
+          <SideBarNavLink slug="categories">Categories</SideBarNavLink>
+          <SideBarNavLink slug="products">Products</SideBarNavLink>
+          <SideBarNavLink slug="orders">Orders</SideBarNavLink>
+          <SideBarNavLink slug="tables">Tables</SideBarNavLink>
 
           <UserButton
             afterSignOutUrl="/"

@@ -1,10 +1,6 @@
 "use client"
-import {
-  MagnifyingGlassIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline"
-import { Category, Food } from "@prisma/client"
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
+import type { Category, Food } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
 import DeleteModal from "./DeleteModal"
@@ -23,6 +19,12 @@ export default function CategoryGridDisplay({
   const [name, setName] = useState("")
   const [id, setId] = useState(0)
   const [blur, setBlur] = useState(false)
+  const handleSearch = (e: any) => {
+    const filtered = categories.filter((category) => {
+      return category.name.toLowerCase().includes(e.target.value.toLowerCase())
+    })
+    setFilteredCategories(filtered)
+  }
   return (
     <>
       <div className="py-4 ">
@@ -32,14 +34,7 @@ export default function CategoryGridDisplay({
           </div>
           <input
             type="text"
-            onChange={(e) => {
-              const filtered = categories.filter((category) => {
-                return category.name
-                  .toLowerCase()
-                  .includes(e.target.value.toLowerCase())
-              })
-              setFilteredCategories(filtered)
-            }}
+            onChange={handleSearch}
             className="block max-w-md placeholder:text-zinc-300 py-2 w-full rounded-full border-none bg-gray-600 pl-10 font-medium text-zinc-200 focus:border-qpay-pink focus:ring-2 focus:ring-qpay-pink focus-visible:ring-qpay-pink focus-visible:ring-2"
             placeholder="Search"
           />
@@ -55,7 +50,7 @@ export default function CategoryGridDisplay({
         {filteredCategories.map((category) => (
           <li
             key={category.id}
-            className="col-span-1  divide-y flex flex-col divide-white rounded-lg  shadow border-qpay-cyan border-2"
+            className="col-span-1  divide-y flex flex-col divide-zinc-600 rounded-lg  shadow border-zinc-600 border-2"
           >
             <div className="flex w-full items-center justify-between space-x-6 p-6">
               <div className="flex-1 truncate">
@@ -67,7 +62,7 @@ export default function CategoryGridDisplay({
               </div>
             </div>
             <div className="mt-auto">
-              <div className="-mt-px flex divide-x divide-gray-200 uppercase ">
+              <div className="-mt-px flex divide-x divide-zinc-600 uppercase ">
                 <div className="flex w-0 flex-1 text-white">
                   <Link
                     href={`/user/categories/${category.id}`}
@@ -90,7 +85,7 @@ export default function CategoryGridDisplay({
                   >
                     <div className="relative flex gap-2 items-center ">
                       Delete
-                      <Ping status="done" />
+                      <Ping status="error" />
                     </div>
                   </button>
                 </div>

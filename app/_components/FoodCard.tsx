@@ -3,6 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 
 export const FoodCard = ({ food, href }: { food: Food; href: string }) => {
+  console.log(food)
   return (
     <Link href={href} className="group block">
       <div className="space-y-2">
@@ -28,7 +29,12 @@ export const FoodCard = ({ food, href }: { food: Food; href: string }) => {
             {food.price}
           </div>
         </div>
-        <div className="text-gray-400">{food.description}</div>
+        <div className="text-zinc-400">{food.description}</div>
+        {food.tags?.map((e, ind) => (
+          <div key={ind} className="text-zinc-400">
+            {e}
+          </div>
+        ))}
       </div>
     </Link>
   )
