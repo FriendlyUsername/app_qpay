@@ -12,7 +12,6 @@ export default async function handler(
     return
   }
   const food = req.body
-  console.log("food in addfood", food)
   try {
     const success = await prisma.restaurant.update({
       where: {
@@ -25,6 +24,14 @@ export default async function handler(
             price: food.price.toString(),
             description: food.description,
             img: "https://picsum.photos/200/300?grayscale",
+            tags: {
+              createMany: {
+                data: food.tags.map(({ tag }: { tag: string }) => ({
+                  name: tag,
+                  restaurantId: 1,
+                })),
+              },
+            },
           },
         },
       },

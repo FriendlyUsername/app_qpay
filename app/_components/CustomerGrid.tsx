@@ -1,7 +1,13 @@
-import type { Food } from "@prisma/client"
+import type { Food, Tag } from "@prisma/client"
 import { FoodCard } from "./FoodCard"
 
-export async function CustomerFoodList({ foods }: { foods: Food[] }) {
+export async function CustomerFoodList({
+  foods,
+}: {
+  foods: (Food & {
+    tags: Tag[]
+  })[]
+}) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-4 gap-6">

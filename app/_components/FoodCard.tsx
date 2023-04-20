@@ -1,11 +1,17 @@
-import { Food } from "@prisma/client"
+import { Food, Tag } from "@prisma/client"
 import Link from "next/link"
 import Image from "next/image"
 
-export const FoodCard = ({ food, href }: { food: Food; href: string }) => {
-  console.log(food)
+export const FoodCard = ({
+  food,
+}: {
+  food: Food & {
+    tags: Tag[]
+  }
+  href: string
+}) => {
   return (
-    <Link href={href} className="group block">
+    <article className="group block">
       <div className="space-y-2">
         {food.img && (
           <div className="relative">
@@ -20,8 +26,8 @@ export const FoodCard = ({ food, href }: { food: Food; href: string }) => {
             />
           </div>
         )}
-        <div className="truncate text-sm font-medium text-white group-hover:text-vercel-cyan">
-          {food.name}
+        <div className=" flex justify-between truncate text-sm font-medium text-white group-hover:text-vercel-cyan">
+          <h3>{food.name}</h3>
         </div>
         <div className="flex">
           <div className="text-sm leading-snug text-white">€</div>
@@ -30,12 +36,15 @@ export const FoodCard = ({ food, href }: { food: Food; href: string }) => {
           </div>
         </div>
         <div className="text-zinc-400">{food.description}</div>
-        {food.tags?.map((e, ind) => (
-          <div key={ind} className="text-zinc-400">
-            {e}
-          </div>
-        ))}
+        <div className="flex gap-2">
+          {food.tags?.map((tag) => (
+            <div key={tag.id} className="text-sm font-medium text-qpay-cyan">
+              {tag.name}
+            </div>
+          ))}
+        </div>
+        <button className="text-qpay-cyan">+</button>
       </div>
-    </Link>
+    </article>
   )
 }

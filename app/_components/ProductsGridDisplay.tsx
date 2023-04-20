@@ -6,13 +6,13 @@ import DeleteModal from "./DeleteModal"
 import { Toaster } from "react-hot-toast"
 import { Ping } from "./Ping"
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid"
-const ProductTags = ({ product }: any) => {
-  if (product.tags === undefined || product.tags.length === 0) return null
+const ProductTags = ({ tags }: { tags: Tag[] }) => {
+  if (tags === undefined || tags.length === 0) return null
   return (
     <ul className="flex gap-2 flex-wrap pt-2">
-      {product.tags.map((tag: any) => (
-        <li key={tag.tag} className="text-xs font-medium  text-teal-200">
-          {tag.tag}
+      {tags.map((tag, ind) => (
+        <li key={ind} className="text-xs font-medium  text-teal-200">
+          {tag.name}
         </li>
       ))}
     </ul>
@@ -26,12 +26,16 @@ export default function ProductsGridDisplay({
     tags: Tag[]
   })[]
 }) {
-  const [filteredProducts, setFilteredProducts] = useState<Food[]>(products)
+  const [filteredProducts, setFilteredProducts] = useState<
+    (Food & {
+      tags: Tag[]
+    })[]
+  >(products)
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
   const [id, setId] = useState(0)
   const [blur, setBlur] = useState(false)
-  console.log(products)
+  console.log(products, "products")
   return (
     <>
       <div className="py-4">
@@ -61,7 +65,7 @@ export default function ProductsGridDisplay({
           (blur ? " blur-sm" : "")
         }
       >
-        {filteredProducts.map((product: Food) => (
+        {filteredProducts.map((product) => (
           <li
             key={product.id}
             className="col-span-1  divide-y flex flex-col divide-zinc-600 rounded-lg  shadow border-zinc-700 border-2"
@@ -77,7 +81,7 @@ export default function ProductsGridDisplay({
                   </span>
                 </div>
                 <p className="mt-1 truncate text-sm ">{product.description}</p>
-                <ProductTags product={product} />
+                <ProductTags tags={product.tags} />
               </div>
             </div>
             <div className="mt-auto">
@@ -109,7 +113,7 @@ export default function ProductsGridDisplay({
           </li>
         ))}
       </ul>
-      <DeleteModal
+      {/* <DeleteModal
         open={open}
         setOpen={setOpen}
         name={name}
@@ -117,7 +121,7 @@ export default function ProductsGridDisplay({
         setFilteredProducts={setFilteredProducts}
         filteredProducts={filteredProducts}
         setBlur={setBlur}
-      />
+      /> */}
       <Toaster />
     </>
   )

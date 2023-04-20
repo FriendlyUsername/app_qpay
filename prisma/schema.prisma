@@ -45,6 +45,17 @@ model Category {
   @@index([restaurantId])
 }
 
+model Tag {
+  id           Int        @id @default(autoincrement())
+  name         String
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+  foodId       Int?
+  Food         Food?      @relation(fields: [foodId], references: [id])
+
+  @@index([restaurantId])
+}
+
 model Food {
   id           Int         @id @default(autoincrement())
   name         String
@@ -52,23 +63,13 @@ model Food {
   description  String
   img          String?
   category     Category?   @relation(fields: [categoryId], references: [id])
-  tags         Tag[]
   categoryId   Int?
   Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId Int?
   Order        Order?      @relation(fields: [orderId], references: [id])
   orderId      Int?
-
-  @@index([restaurantId])
-}
-
-model Tag {
-  id           Int        @id @default(autoincrement())
-  tag          String
-  Food         Food?      @relation(fields: [foodId], references: [id])
-  foodId       Int?
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  restaurantId Int
+  tags         Tag[]
+  tagId        Int?
 
   @@index([restaurantId])
 }

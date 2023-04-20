@@ -30,17 +30,19 @@ const orderSchema = z.any()
 
 export default function CustomerForm({
   restaurant,
+  children,
 }: {
   restaurant: Restaurant & {
+    foods: (Food & {
+      tags: Tag[]
+    })[]
     categories: Category[]
-    foods: Food[]
-    tags: Tag[]
   }
+  children: any
 }) {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
     control,
   } = useForm({
@@ -54,9 +56,7 @@ export default function CustomerForm({
   const router = useRouter()
   // @ts-expect-error
   const { slug } = useParams()
-  console.log(slug)
   if (!restaurant) return <div className="text-white">no restaurant found</div>
-  console.log(foods)
   async function processForm(data: any) {
     console.log(data, "data from customer form")
     // TODO make this come from input
@@ -80,6 +80,7 @@ export default function CustomerForm({
       console.error(error)
     }
   }
+  console.log(restaurant)
   return (
     <div className="px-4 my-auto text-white flex flex-col">
       <NavBar slug={slug} />
@@ -96,8 +97,11 @@ export default function CustomerForm({
       <div className="pt-4">
         <form onSubmit={handleSubmit(processForm)}>
           <h2 className="text-2xl pb-4">Products</h2>
-          {/*@ts-expect-error server component  */}
-          <CustomerFoodList foods={restaurant.foods} />
+          {children}
+          {/* <CustomerFoodList
+            foods={restaurant.foods}
+            tags={restaurant.tags || []}
+          /> */}
           {/* {restaurant.foods.map((food: Food) => ( <button
               type="button"
               className="block pb-2"
