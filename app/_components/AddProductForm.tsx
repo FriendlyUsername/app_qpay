@@ -3,12 +3,12 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
-import type { Food } from "@prisma/client"
+import type { Product } from "@prisma/client"
 import { MyInput, MyInputSkeleton } from "./MyInput"
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid"
 import toast, { Toaster } from "react-hot-toast"
 
-const foodSchema = z.object({
+const productSchema = z.object({
   name: z.string().min(1).max(50),
   price: z.number(),
   description: z.string().min(1).max(50),
@@ -21,9 +21,9 @@ const foodSchema = z.object({
     )
     .optional(),
 })
-export const AddFoodForm = (props: {
+export const AddProductForm = (props: {
   method: "create" | "update"
-  food?: Food
+  product?: Product
 }) => {
   const {
     register,
@@ -32,7 +32,7 @@ export const AddFoodForm = (props: {
     formState: { errors, isSubmitting },
     control,
   } = useForm({
-    resolver: zodResolver(foodSchema),
+    resolver: zodResolver(productSchema),
   })
   const { fields, append } = useFieldArray({
     control,
@@ -42,7 +42,7 @@ export const AddFoodForm = (props: {
   const processForm = async (data: any) => {
     try {
       if (props.method === "create") {
-        const res = await fetch("/api/addfood", {
+        const res = await fetch("/api/addproduct", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -55,7 +55,7 @@ export const AddFoodForm = (props: {
           toast.error("Something went wrong")
         }
       } else {
-        const res = await fetch("/api/updatefood", {
+        const res = await fetch("/api/updateproduct", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -89,7 +89,7 @@ export const AddFoodForm = (props: {
             register={register}
             name="id"
             errors={errors}
-            defaultValue={props.food?.id?.toString() || ""}
+            defaultValue={props.product?.id?.toString() || ""}
             hidden={true}
           />
         )}
@@ -97,13 +97,13 @@ export const AddFoodForm = (props: {
           hidden={false}
           register={register}
           name="name"
-          defaultValue={props.food?.name?.toString() || ""}
+          defaultValue={props.product?.name?.toString() || ""}
           errors={errors}
         />
         <MyInput
           hidden={false}
           register={register}
-          defaultValue={props.food?.description?.toString() || ""}
+          defaultValue={props.product?.description?.toString() || ""}
           name="description"
           errors={errors}
         />
@@ -111,7 +111,7 @@ export const AddFoodForm = (props: {
           hidden={false}
           register={register}
           name="price"
-          defaultValue={props.food?.price?.toString() || "0"}
+          defaultValue={props.product?.price?.toString() || "0"}
           errors={errors}
           type="number"
         />
@@ -180,7 +180,7 @@ export const AddFoodForm = (props: {
   )
 }
 
-export const SkeletFoodForm = () => {
+export const SkeletProductForm = () => {
   return (
     <section className="animate-pulse blur-sm">
       {/* <h2 className="text-xl py-4">

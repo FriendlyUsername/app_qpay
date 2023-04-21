@@ -1,15 +1,14 @@
 import prisma from "@/utils/prisma"
 import { currentUser } from "@clerk/nextjs/app-beta"
-import type { Food, Tag } from "@prisma/client"
+import type { Product, Tag } from "@prisma/client"
 import ProductsGridDisplay from "./ProductsGridDisplay"
 
 export default async function ProductsGrid() {
   const products = await getProducts()
-  console.log(products)
   if (products === "No user found") return <div>no user found</div>
   if (!products) return <div>no products found</div>
   console.log(products, "logging products from ProductsGrid")
-  return <ProductsGridDisplay products={products.foods} />
+  return <ProductsGridDisplay products={products.products} />
 }
 
 async function getProducts() {
@@ -21,7 +20,7 @@ async function getProducts() {
       user_id: user.id,
     },
     select: {
-      foods: {
+      products: {
         include: {
           tags: true,
         },

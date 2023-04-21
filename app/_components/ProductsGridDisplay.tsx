@@ -1,5 +1,5 @@
 "use client"
-import type { Food, Tag } from "@prisma/client"
+import type { Product, Tag } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
 import DeleteModal from "./DeleteModal"
@@ -22,12 +22,12 @@ const ProductTags = ({ tags }: { tags: Tag[] }) => {
 export default function ProductsGridDisplay({
   products,
 }: {
-  products: (Food & {
+  products: (Product & {
     tags: Tag[]
   })[]
 }) {
   const [filteredProducts, setFilteredProducts] = useState<
-    (Food & {
+    (Product & {
       tags: Tag[]
     })[]
   >(products)

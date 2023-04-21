@@ -3,11 +3,12 @@ import prisma from "@/utils/prisma"
 import { currentUser } from "@clerk/nextjs/app-beta"
 import { Suspense } from "react"
 import Loading from "./loading"
-import { AddFoodForm } from "@/app/_components/AddFoodForm"
+import { AddProductForm } from "@/app/_components/AddProductForm"
 import { PlusCircleIcon } from "@heroicons/react/24/outline"
 
 export default async function Restaurant() {
   const restaurant = await getRestaurant()
+  if (!restaurant) return <div>no Restaurant found</div>
   if (restaurant === "No user found") return <div>{restaurant}</div>
 
   return (
@@ -18,7 +19,7 @@ export default async function Restaurant() {
           title={"Add Product"}
           icon={<PlusCircleIcon className="h-6 w-6" />}
         />
-        <AddFoodForm method="create" />
+        <AddProductForm method="create" />
       </Suspense>
     </div>
   )

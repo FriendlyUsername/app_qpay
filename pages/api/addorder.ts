@@ -1,13 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import prisma from "@/utils/prisma"
-import type { Food } from "@prisma/client"
+import { Product } from "@prisma/client"
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const order = req.body
-  console.log("order in addorder", order)
   try {
     const success = await prisma.restaurant.update({
       where: {
@@ -18,12 +17,12 @@ export default async function handler(
           create: {
             message: order.message || "",
             status: order.status || "pending",
-            foods: {
+            products: {
               createMany: {
-                data: order.foods.map((food: Food) => ({
-                  name: food.name,
-                  price: food.price,
-                  description: food.description,
+                data: order.order.foods.map((product: Product) => ({
+                  name: product.name,
+                  price: product.price,
+                  description: product.description,
                 })),
               },
             },

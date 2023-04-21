@@ -1,19 +1,22 @@
-import type { Food, Tag } from "@prisma/client"
-import { FoodCard } from "./FoodCard"
+import type { Product, Tag } from "@prisma/client"
+import { ProductCard } from "./ProductCard"
 
-export async function CustomerFoodList({
-  foods,
+export function CustomerProductList({
+  products,
 }: {
-  foods: (Food & {
+  products: (Product & {
     tags: Tag[]
   })[]
 }) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-4 gap-6">
-        {foods.map((food) => (
-          <div key={food.id} className="col-span-4 lg:col-span-1">
-            <FoodCard food={food} href={`/customer/food/${food.id}`} />
+        {products.map((product) => (
+          <div key={product.id} className="col-span-4 lg:col-span-1">
+            <ProductCard
+              product={product}
+              href={`/customer/Product/${product.id}`}
+            />
           </div>
         ))}
       </div>

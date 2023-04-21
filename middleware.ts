@@ -1,9 +1,8 @@
 import { withClerkMiddleware, getAuth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
 
 // Set the paths that don't require the user to be signed in
-const publicPaths = ["/", "/sign-in*", "/sign-up*", "/about"]
+const publicPaths = ["/", "/sign-in*", "/sign-up*", "/about", "/customer*"]
 
 const isPublic = (path: string) => {
   return publicPaths.find((x) =>
@@ -11,7 +10,7 @@ const isPublic = (path: string) => {
   )
 }
 
-export default withClerkMiddleware((request: NextRequest) => {
+export default withClerkMiddleware((request: any) => {
   if (isPublic(request.nextUrl.pathname)) {
     return NextResponse.next()
   }

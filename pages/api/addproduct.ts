@@ -11,22 +11,22 @@ export default async function handler(
     res.status(401).json({ error: "Unauthorized" })
     return
   }
-  const food = req.body
+  const product = req.body
   try {
     const success = await prisma.restaurant.update({
       where: {
         user_id: userId,
       },
       data: {
-        foods: {
+        products: {
           create: {
-            name: food.name,
-            price: food.price.toString(),
-            description: food.description,
+            name: product.name,
+            price: product.price.toString(),
+            description: product.description,
             img: "https://picsum.photos/200/300?grayscale",
             tags: {
               createMany: {
-                data: food.tags.map(({ tag }: { tag: string }) => ({
+                data: product.tags.map(({ tag }: { tag: string }) => ({
                   name: tag,
                   restaurantId: 1,
                 })),
@@ -36,13 +36,13 @@ export default async function handler(
         },
       },
     })
-    console.log(success, "success in addfood")
+    console.log(success, "success in addproduct")
     // retrieve data from your database
     res
       .status(200)
-      .json({ message: `Successfully added ${food.name}! to your products` })
+      .json({ message: `Successfully added ${product.name}! to your products` })
   } catch (e) {
-    console.log(e, "error adding food")
-    res.status(500).json({ message: "error adding food" })
+    console.log(e, "error adding product")
+    res.status(500).json({ message: "error adding product" })
   }
 }

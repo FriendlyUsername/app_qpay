@@ -18,6 +18,9 @@ export default function UserLayout({
           <SideBarNavLink slug="products">Products</SideBarNavLink>
           <SideBarNavLink slug="orders">Orders</SideBarNavLink>
           <SideBarNavLink slug="tables">Tables</SideBarNavLink>
+          <Link href="/customer/user_2O17ICXqJbosZTXpDCPIINMpF36">
+            customer
+          </Link>
 
           <UserButton
             afterSignOutUrl="/"

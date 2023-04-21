@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from "zod"
 import { MyInput } from "./MyInput"
-import { Food } from "@prisma/client"
+import { Product } from "@prisma/client"
 
 const deleteSchema = z.object({
   id: z.string().min(1).max(50),
@@ -26,8 +26,8 @@ export default function DeleteModal({
   setOpen: Dispatch<SetStateAction<boolean>>
   name: string
   id: number
-  setFilteredProducts: Dispatch<SetStateAction<Food[]>>
-  filteredProducts: Food[]
+  setFilteredProducts: Dispatch<SetStateAction<Product[]>>
+  filteredProducts: Product[]
   setBlur: Dispatch<SetStateAction<boolean>>
 }) {
   const cancelButtonRef = useRef(null)
@@ -45,7 +45,7 @@ export default function DeleteModal({
   async function prozessForm(data: any) {
     console.log(data, "data")
     try {
-      const res = await fetch("/api/deletefood", {
+      const res = await fetch("/api/deleteproduct", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

@@ -189,7 +189,7 @@ export default function OrderGridDisplay() {
           </li>
         ))}
       </ul>
-      <OrderDetailsModal
+      {/* <OrderDetailsModal
         open={opendetails}
         setOpen={setOpenDetails}
         id={id}
@@ -201,7 +201,7 @@ export default function OrderGridDisplay() {
         setOpen={setOpendelete}
         id={id}
         setBlur={setBlur}
-      />
+      /> */}
       <Toaster />
     </>
   )

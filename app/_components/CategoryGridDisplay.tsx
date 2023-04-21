@@ -1,6 +1,6 @@
 "use client"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
-import type { Category, Food } from "@prisma/client"
+import type { Category, Product } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
 import DeleteModal from "./DeleteModal"

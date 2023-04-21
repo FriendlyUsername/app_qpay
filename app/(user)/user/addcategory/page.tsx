@@ -1,8 +1,6 @@
 import Heading from "@/app/_components/Heading"
 import prisma from "@/utils/prisma"
 import { currentUser } from "@clerk/nextjs/app-beta"
-import { Suspense } from "react"
-import Loading from "./loading"
 import { PlusCircleIcon } from "@heroicons/react/24/outline"
 import { CategoryForm } from "@/app/_components/CategoryForm"
 

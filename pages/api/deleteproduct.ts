@@ -11,17 +11,17 @@ export default async function handler(
     res.status(401).json({ error: "Unauthorized" })
     return
   }
-  const food = req.body
-  console.log("food in deletefood", food)
+  const product = req.body
+  console.log("product in deleteproduct", product)
   try {
     const success = await prisma.restaurant.update({
       where: {
         user_id: userId,
       },
       data: {
-        foods: {
+        products: {
           delete: {
-            id: parseInt(food.id),
+            id: parseInt(product.id),
           },
         },
       },
@@ -29,7 +29,7 @@ export default async function handler(
     // retrieve data from your database
     res.status(200).json({ message: `Successfully deleted product !` })
   } catch (e) {
-    console.log(e, "error deleting food")
+    console.log(e, "error deleting product")
     res.status(500).json({ message: "error deleting product" })
   }
 }

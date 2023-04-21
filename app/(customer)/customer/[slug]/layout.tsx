@@ -1,3 +1,5 @@
+import { NavBar } from "@/app/_components/CustomerNavBar"
+import OrderProvider from "@/app/_components/OrderContext"
 import "@/app/globals.css"
 
 import { Inter, Montserrat } from "next/font/google"
@@ -27,7 +29,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${montserrat.variable} h-full`}
     >
-      <body className="h-full bg-black">{children}</body>
+      <body className="h-full bg-black font-inter">
+        <OrderProvider>{children}</OrderProvider>
+      </body>
     </html>
   )
 }

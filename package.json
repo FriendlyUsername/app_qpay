@@ -13,11 +13,11 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.15.0",
-    "@clerk/themes": "^1.5.2",
-    "@headlessui/react": "^1.7.13",
+    "@clerk/nextjs": "^4.16.4",
+    "@clerk/themes": "^1.6.3",
+    "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
-    "@hookform/resolvers": "^3.0.1",
+    "@hookform/resolvers": "^3.1.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "18.15.11",
@@ -27,7 +27,7 @@
     "eslint": "8.37.0",
     "eslint-config-next": "13.3.0",
     "faker": "^6.6.6",
-    "next": "13.3.0",
+    "next": "13.2.0",
     "postcss": "8.4.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -40,10 +40,10 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@prisma/client": "^4.12.0",
+    "@prisma/client": "^4.13.0",
     "install": "^0.13.0",
-    "prettier": "^2.8.7",
+    "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.7",
-    "prisma": "^4.12.0"
+    "prisma": "^4.13.0"
   }
 }

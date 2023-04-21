@@ -16,7 +16,7 @@ model Restaurant {
   city       String
   state      String
   zip        String
-  foods      Food[]
+  products   Product[]
   categories Category[]
   tags       Tag[]
   orders     Order[]
@@ -28,7 +28,7 @@ model Order {
   id           Int        @id @default(autoincrement())
   restaurantId Int
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  foods        Food[]
+  products     Product[]
   message      String
   status       String
 
@@ -38,7 +38,7 @@ model Order {
 model Category {
   id           Int        @id @default(autoincrement())
   name         String
-  Food         Food[]
+  Product      Product[]
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId Int
 
@@ -50,13 +50,13 @@ model Tag {
   name         String
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId Int
-  foodId       Int?
-  Food         Food?      @relation(fields: [foodId], references: [id])
+  productId    Int?
+  Product      Product?   @relation(fields: [productId], references: [id])
 
   @@index([restaurantId])
 }
 
-model Food {
+model Product {
   id           Int         @id @default(autoincrement())
   name         String
   price        String

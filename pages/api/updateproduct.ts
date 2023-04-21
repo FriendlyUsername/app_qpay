@@ -11,7 +11,7 @@ export default async function handler(
     res.status(401).json({ error: "Unauthorized" })
     return
   }
-  const food = req.body
+  const product = req.body
   console.log("in updatefood")
   try {
     const success = await prisma.restaurant.update({
@@ -19,20 +19,20 @@ export default async function handler(
         user_id: userId,
       },
       data: {
-        foods: {
+        products: {
           update: {
             where: {
-              id: parseInt(food.id),
+              id: parseInt(product.id),
             },
             data: {
-              description: food.description,
-              category: food.category,
-              name: food.name,
-              price: food.price.toString(),
+              description: product.description,
+              category: product.category,
+              name: product.name,
+              price: product.price.toString(),
               tags: {
                 createMany: {
                   data:
-                    food.tags?.map((tag: any) => ({
+                    product.tags?.map((tag: any) => ({
                       tag: tag.tag,
                     })) || [],
                 },
@@ -44,9 +44,9 @@ export default async function handler(
     })
     console.log(success, "success in update")
     // retrieve data from your database
-    res.status(200).json({ message: `Successfully updated ${food.name}!` })
+    res.status(200).json({ message: `Successfully updated ${product.name}!` })
   } catch (e) {
-    console.log(e, "error updating food")
-    res.status(500).json({ message: "error updatign food" })
+    console.log(e, "error updating product")
+    res.status(500).json({ message: "error updatign product" })
   }
 }

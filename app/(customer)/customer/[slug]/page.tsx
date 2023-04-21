@@ -1,15 +1,14 @@
 import CustomerForm from "@/app/_components/CustomerForm"
-import { CustomerFoodList } from "@/app/_components/CustomerGrid"
 import prisma from "@/utils/prisma"
 
 export default async function Home(params: { params: { slug: string } }) {
   const restaurant = await getRestaurant(params)
   if (!restaurant) return <div className="text-white">no restaurant found</div>
   return (
-    <CustomerForm restaurant={restaurant}>
-      {/*@ts-expect-error server comp  */}
-      <CustomerFoodList foods={restaurant.foods} />
-    </CustomerForm>
+    <CustomerForm
+      restaurant={restaurant}
+      slug={params.params.slug}
+    ></CustomerForm>
   )
 }
 async function getRestaurant({ params }: { params: { slug: string } }) {
@@ -20,7 +19,7 @@ async function getRestaurant({ params }: { params: { slug: string } }) {
     },
     include: {
       categories: true,
-      foods: {
+      products: {
         include: {
           tags: true,
         },

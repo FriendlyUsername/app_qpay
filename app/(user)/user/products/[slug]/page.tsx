@@ -1,28 +1,26 @@
 import Heading from "@/app/_components/Heading"
-import { Suspense } from "react"
-import Loading from "../loading"
-import type { Food } from "@prisma/client"
-import { AddFoodForm } from "@/app/_components/AddFoodForm"
+import type { Product } from "@prisma/client"
+import { AddProductForm } from "@/app/_components/AddProductForm"
 import { currentUser } from "@clerk/nextjs/app-beta"
 import prisma from "@/utils/prisma"
-type FoodReturn =
+type ProductReturn =
   | "No user found"
   | "No food found"
   | {
-      foods: Food[]
+      products: Product[]
     }
   | null
-const ShowFood = ({ food }: { food: FoodReturn }) => {
-  if (food === "No user found") return <div>not logged in</div>
-  if (food === "No food found" || food === null)
+const ShowFood = ({ product }: { product: ProductReturn }) => {
+  if (product === "No user found") return <div>not logged in</div>
+  if (product === "No food found" || product === null)
     return <div>no Product found go create one :)</div>
-  console.log(food, "logging foof from ShowFood")
+  console.log(product, "logging foof from ShowFood")
 
-  return <AddFoodForm method="update" food={food.foods[0]} />
+  return <AddProductForm method="update" product={product.products[0]} />
 }
 
 export default async function Restaurant({ params }: { params: any }) {
-  const food: FoodReturn = await getFood(params)
+  const product: ProductReturn = await getProduct(params)
   return (
     <div className="">
       {/*@ts-expect-error Server Components :(        */}
@@ -33,13 +31,13 @@ export default async function Restaurant({ params }: { params: any }) {
           <RestaurantForm restaurant={restaurant} method="update" />
         )} */}
       {/* <ProductsGrid /> */}
-      <ShowFood food={food} />
+      <ShowFood product={product} />
       {/* </Suspense> */}
     </div>
   )
 }
 
-async function getFood(params: any) {
+async function getProduct(params: any) {
   const user = await currentUser()
   if (!user) return "No user found"
   try {
@@ -48,7 +46,7 @@ async function getFood(params: any) {
         user_id: user.id,
       },
       select: {
-        foods: {
+        products: {
           where: {
             id: parseInt(params.slug),
           },

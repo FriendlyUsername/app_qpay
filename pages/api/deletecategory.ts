@@ -19,7 +19,7 @@ export default async function handler(
         id: parseInt(category.id),
       },
       include: {
-        Food: true,
+        Product: true,
       },
     })
     // retrieve data from your database

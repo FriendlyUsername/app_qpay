@@ -1,67 +1,47 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Category, Food, Restaurant, Tag } from "@prisma/client"
-import { useFieldArray, useForm } from "react-hook-form"
+import type { Category, Product, Restaurant, Tag } from "@prisma/client"
+import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useState } from "react"
+import { useContext } from "react"
 import toast from "react-hot-toast"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { MyInput } from "./MyInput"
-import { CustomerFoodList } from "./CustomerGrid"
-const NavBar = ({ slug }: { slug: string }) => {
-  return (
-    <div className="flex flex-row justify-between py-4">
-      <div>
-        <a href={`/app/customer/customer/${slug}`} className="text-white">
-          Home
-        </a>
-      </div>
-      <div>
-        {/*TODO link to actual cart  */}
-        <a href={`/app/customer/customer/${slug}/cart`} className="text-white">
-          Cart
-        </a>
-      </div>
-    </div>
-  )
-}
+import { CustomerProductList } from "./CustomerGrid"
+import { OrderContext } from "./OrderContext"
+import { NavBar } from "./CustomerNavBar"
 
 const orderSchema = z.any()
 
 export default function CustomerForm({
   restaurant,
-  children,
+  slug,
 }: {
   restaurant: Restaurant & {
-    foods: (Food & {
+    products: (Product & {
       tags: Tag[]
     })[]
     categories: Category[]
   }
-  children: any
+  slug: string
 }) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    control,
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(orderSchema),
   })
-  const { fields, append } = useFieldArray({
-    control,
-    name: "foods", // unique name for your Field Array
-  })
-  const [foods, setFoods] = useState<Food[]>([])
   const router = useRouter()
-  // @ts-expect-error
-  const { slug } = useParams()
+  const { order } = useContext(OrderContext)
   if (!restaurant) return <div className="text-white">no restaurant found</div>
   async function processForm(data: any) {
     console.log(data, "data from customer form")
     // TODO make this come from input
     data.status = "pending"
     data.id = slug
+    data.order = order
+    console.log(order.products, "order.foods")
     try {
       const res = await fetch("/api/addorder", {
         method: "POST",
@@ -80,9 +60,9 @@ export default function CustomerForm({
       console.error(error)
     }
   }
-  console.log(restaurant)
+  console.log(order, "order from customer form")
   return (
-    <div className="px-4 my-auto text-white flex flex-col">
+    <div className="px-4 my-auto text-white flex flex-col pb-16">
       <NavBar slug={slug} />
       <div>
         <h2>Categories</h2>
@@ -97,32 +77,38 @@ export default function CustomerForm({
       <div className="pt-4">
         <form onSubmit={handleSubmit(processForm)}>
           <h2 className="text-2xl pb-4">Products</h2>
-          {children}
-          {/* <CustomerFoodList
-            foods={restaurant.foods}
-            tags={restaurant.tags || []}
-          /> */}
-          {/* {restaurant.foods.map((food: Food) => ( <button
-              type="button"
-              className="block pb-2"
-              key={food.id}
-              onClick={() => {
-                append(food)
-                setFoods([...foods, food])
-              }}
-            >
-              Product: {food.name} +
-            </button>
-          ))} */}
-          <p>Product count : {foods.length}</p>
+          <CustomerProductList products={restaurant.products} />
+          {order?.products && (
+            <div className="text-qpay-cyan text-md">
+              {Array.from(
+                new Set(order.products.map((product) => product.id))
+              ).map((id) => {
+                const foodName = order.products.find(
+                  (product) => product.id === id
+                )?.name
+                const quantity = order.products.filter(
+                  (product) => product.id === id
+                ).length
+                return (
+                  <div className="flex gap-4" key={id}>
+                    <p>Name:&quot;{foodName}&quot;</p>
+                    <p>Quantity: {quantity}</p>
+                  </div>
+                )
+              })}
+            </div>
+          )}
           <MyInput
             register={register}
             errors={errors}
             hidden={false}
             name="message"
           />
-          <button className="block" type="submit">
-            submit
+          <button
+            className="fixed bottom-2 inset-x-0 max-w-max mx-auto bg-qpay-pink rounded-lg  px-4 py-2 text-zinc-900 font-bold text-center"
+            type="submit"
+          >
+            order with {order?.products.length} items
           </button>
         </form>
       </div>
