@@ -11,9 +11,6 @@ export default function SideBarNavLink({
 }) {
   const segment = useSelectedLayoutSegment()
   const isActive = slug === segment
-  console.log(segment, "segment")
-  console.log(isActive, "isActive")
-
   return (
     <Link
       href={`/user/${slug}`}

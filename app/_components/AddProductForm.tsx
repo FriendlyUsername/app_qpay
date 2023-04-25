@@ -1,11 +1,11 @@
 "use client"
-import { useFieldArray, useForm } from "react-hook-form"
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
 import type { Product } from "@prisma/client"
 import { MyInput, MyInputSkeleton } from "./MyInput"
-import { ExclamationCircleIcon } from "@heroicons/react/20/solid"
+import { ExclamationCircleIcon, PhotoIcon } from "@heroicons/react/20/solid"
 import toast, { Toaster } from "react-hot-toast"
 
 const productSchema = z.object({
@@ -13,6 +13,7 @@ const productSchema = z.object({
   price: z.number(),
   description: z.string().min(1).max(50),
   id: z.string().min(1).max(50).optional(),
+  file: typeof window === "undefined" ? z.any() : z.instanceof(FileList),
   tags: z
     .array(
       z.object({
@@ -21,6 +22,7 @@ const productSchema = z.object({
     )
     .optional(),
 })
+type ProductForm = z.infer<typeof productSchema>
 export const AddProductForm = (props: {
   method: "create" | "update"
   product?: Product
@@ -31,7 +33,7 @@ export const AddProductForm = (props: {
     reset,
     formState: { errors, isSubmitting },
     control,
-  } = useForm({
+  } = useForm<ProductForm>({
     resolver: zodResolver(productSchema),
   })
   const { fields, append } = useFieldArray({
@@ -39,9 +41,55 @@ export const AddProductForm = (props: {
     name: "tags", // unique name for your Field Array
   })
   const router = useRouter()
-  const processForm = async (data: any) => {
-    try {
+  const processForm: SubmitHandler<ProductForm> = async (data) => {
+    // no image uploaded
+    if (!data.file || data.file[0] === undefined) {
+      try {
+        if (props.method === "create") {
+          const res = await fetch("/api/addproduct", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          })
+          if (res.status === 200) {
+            const message = await res.json()
+            toast.success(message.message)
+          } else {
+            toast.error("Something went wrong")
+          }
+        } else {
+          const res = await fetch("/api/updateproduct", {
+            method: "POST",
+            body: JSON.stringify(data),
+          })
+          if (res.status === 200) {
+            const message = await res.json()
+            toast.success(message.message)
+          } else {
+            toast.error("Something went wrong")
+          }
+        }
+        router.refresh()
+      } catch (error) {
+        console.error(error)
+      }
       if (props.method === "create") {
+        reset()
+      }
+    } else {
+      const responseData = await fetch(
+        "http://localhost:3000/api/uploadimage",
+        {
+          method: "POST",
+          body: data.file[0],
+        }
+      ).then((r) => {
+        return r.json() as Promise<{ secure_url: string; error?: string }>
+      })
+      if (responseData.error) {
+        toast.error(responseData.error)
+      } else {
+        data.file = responseData.secure_url
         const res = await fetch("/api/addproduct", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -50,30 +98,10 @@ export const AddProductForm = (props: {
         if (res.status === 200) {
           const message = await res.json()
           toast.success(message.message)
-        }
-        if (res.status === 500) {
-          toast.error("Something went wrong")
-        }
-      } else {
-        const res = await fetch("/api/updateproduct", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        })
-        if (res.status === 200) {
-          const message = await res.json()
-          toast.success(message.message)
-        }
-        if (res.status === 500) {
+        } else {
           toast.error("Something went wrong")
         }
       }
-      router.refresh()
-    } catch (error) {
-      console.error(error)
-    }
-    if (props.method === "create") {
-      reset()
     }
   }
 
@@ -83,7 +111,11 @@ export const AddProductForm = (props: {
         {props.method === "create" && "Create Food"}{" "}
         {props.method === "update" && "Update Food"}
       </h2> */}
-      <form method="post" onSubmit={handleSubmit(processForm)} className="pt-4">
+      <form
+        method="post"
+        onSubmit={handleSubmit(processForm)}
+        className="pt-4 max-w-md"
+      >
         {props.method === "update" && (
           <MyInput
             register={register}
@@ -115,6 +147,40 @@ export const AddProductForm = (props: {
           errors={errors}
           type="number"
         />
+        <div className="col-span-full pb-4">
+          <label
+            htmlFor="cover-photo"
+            className="block text-sm font-medium leading-6 text-white"
+          >
+            Product Image
+          </label>
+          <div className=" mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
+            <div className="text-center">
+              <PhotoIcon
+                className="mx-auto h-12 w-12 text-gray-500"
+                aria-hidden="true"
+              />
+              <div className="mt-4 flex text-sm leading-6 text-gray-400">
+                <label
+                  htmlFor="file"
+                  className="relative cursor-pointer rounded-md bg-zinc-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-qpay-cyan focus-within:ring-offset-2 focus-within:ring-offset-zinc-900 hover:text-qpay-cyan"
+                >
+                  <span>Upload a file</span>
+                  <input
+                    {...register("file")}
+                    name="file"
+                    type="file"
+                    // className="sr-only"
+                  />
+                </label>
+                <p className="pl-1">or drag and drop</p>
+              </div>
+              <p className="text-xs leading-5 text-zinc-400">
+                PNG, JPG, GIF up to 5MB
+              </p>
+            </div>
+          </div>
+        </div>
         {fields.map((field, index) => (
           <div key={field.id} className="pb-4">
             <input
@@ -122,7 +188,7 @@ export const AddProductForm = (props: {
               defaultValue={`tags.${index}.tag`}
               placeholder="enter tag"
               className={
-                "block py-2 w-full max-w-md mb-2 rounded-full border-none bg-zinc-600 pl-5 font-medium text-zinc-200" +
+                "block py-2 w-full max-w-md mb-2 placeholder:text-zinc-400 rounded-full border-none bg-zinc-600 pl-5 font-medium text-zinc-200" +
                 // @ts-ignore
                 (errors?.tags?.[index]?.tag.message
                   ? " ring-red-300 placeholder:text-red-300 focus:ring-red-500 text-red-100"

@@ -14,7 +14,7 @@ export const MyInput = (props: MyInputProps) => {
       ? { setValueAs: (v: any) => (v === "" ? undefined : parseInt(v, 10)) }
       : {}
   // console.log(props.errors, props.name)
-  console.log(props.errors, "default value")
+  // console.log(props.errors, "default value")
   return (
     <>
       <div className={"pb-4 max-w-md" + (props.hidden ? " hidden" : "")}>
