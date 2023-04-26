@@ -18,7 +18,11 @@ async function getRestaurant({ params }: { params: { slug: string } }) {
       user_id: userId,
     },
     include: {
-      categories: true,
+      categories: {
+        include: {
+          Product: true,
+        },
+      },
       products: {
         include: {
           tags: true,

@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation"
 import type { Product } from "@prisma/client"
 import { MyInput, MyInputSkeleton } from "./MyInput"
 import { ExclamationCircleIcon, PhotoIcon } from "@heroicons/react/20/solid"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster } from "react-hot-toast"
+import { handleUpload } from "@/utils/productFormLogic"
+import { useReducer } from "react"
 
 const productSchema = z.object({
   name: z.string().min(1).max(50),
@@ -14,15 +16,38 @@ const productSchema = z.object({
   description: z.string().min(1).max(50),
   id: z.string().min(1).max(50).optional(),
   file: typeof window === "undefined" ? z.any() : z.instanceof(FileList),
-  tags: z
-    .array(
-      z.object({
-        tag: z.string().min(1).max(50),
-      })
-    )
-    .optional(),
+  tags:
+    z
+      .array(
+        z.object({
+          tag: z.string().min(1).max(50),
+        })
+      )
+      .optional() || [],
 })
-type ProductForm = z.infer<typeof productSchema>
+type Action = {
+  type: "SET_CATEGORY"
+  payload: string
+}
+type State = {
+  category: string
+}
+const initialState: State = {
+  category: "",
+}
+const reducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case "SET_CATEGORY":
+      return {
+        ...state,
+        category: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+export type ProductForm = z.infer<typeof productSchema>
 export const AddProductForm = (props: {
   method: "create" | "update"
   product?: Product
@@ -42,75 +67,12 @@ export const AddProductForm = (props: {
   })
   const router = useRouter()
   const processForm: SubmitHandler<ProductForm> = async (data) => {
-    // no image uploaded
-    if (!data.file || data.file[0] === undefined) {
-      try {
-        if (props.method === "create") {
-          const res = await fetch("/api/addproduct", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-          })
-          if (res.status === 200) {
-            const message = await res.json()
-            toast.success(message.message)
-          } else {
-            toast.error("Something went wrong")
-          }
-        } else {
-          const res = await fetch("/api/updateproduct", {
-            method: "POST",
-            body: JSON.stringify(data),
-          })
-          if (res.status === 200) {
-            const message = await res.json()
-            toast.success(message.message)
-          } else {
-            toast.error("Something went wrong")
-          }
-        }
-        router.refresh()
-      } catch (error) {
-        console.error(error)
-      }
-      if (props.method === "create") {
-        reset()
-      }
-    } else {
-      const responseData = await fetch(
-        "http://localhost:3000/api/uploadimage",
-        {
-          method: "POST",
-          body: data.file[0],
-        }
-      ).then((r) => {
-        return r.json() as Promise<{ secure_url: string; error?: string }>
-      })
-      if (responseData.error) {
-        toast.error(responseData.error)
-      } else {
-        data.file = responseData.secure_url
-        const res = await fetch("/api/addproduct", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        })
-        if (res.status === 200) {
-          const message = await res.json()
-          toast.success(message.message)
-        } else {
-          toast.error("Something went wrong")
-        }
-      }
-    }
+    await handleUpload(data, props.method, reset, router)
   }
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
     <section>
-      {/* <h2 className="text-xl py-4">
-        {props.method === "create" && "Create Food"}{" "}
-        {props.method === "update" && "Update Food"}
-      </h2> */}
       <form
         method="post"
         onSubmit={handleSubmit(processForm)}

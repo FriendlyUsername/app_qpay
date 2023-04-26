@@ -1,8 +1,9 @@
-// Example of a restricted endpoint that only authenticated users can access from https://next-auth.js.org/getting-started/example
-
+import { getAuth } from "@clerk/nextjs/server"
 import { NextApiRequest, NextApiResponse } from "next"
 import type { Readable } from "node:stream"
-const cloudinary = require("cloudinary").v2
+import { v2 } from "cloudinary"
+
+const cloudinary = v2
 cloudinary.config({
   cloud_url: process.env.CLOUDINARY_URL,
 })
@@ -28,6 +29,11 @@ export const config = {
   },
 }
 const uploadimage = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { userId } = getAuth(req)
+  if (!userId) {
+    res.status(401).json({ error: "Unauthorized" })
+    return
+  }
   if (req.method === "POST") {
     const buf = await buffer(req)
     const file64 = parser.format(".png", buf).content

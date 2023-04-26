@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import type { Category, Product, Restaurant, Tag } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useContext } from "react"
+import { useContext, useReducer } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { MyInput } from "./MyInput"
@@ -13,16 +13,42 @@ import { NavBar } from "./CustomerNavBar"
 
 const orderSchema = z.any()
 
+type Action = {
+  type: "SET_CATEGORYID"
+  payload: number
+}
+type State = {
+  category: number
+}
+const initialState: State = {
+  category: 0,
+}
+const reducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case "SET_CATEGORYID":
+      return {
+        ...state,
+        category: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
 export default function CustomerForm({
   restaurant,
   slug,
 }: {
-  restaurant: Restaurant & {
-    products: (Product & {
-      tags: Tag[]
-    })[]
-    categories: Category[]
-  }
+  restaurant:
+    | (Restaurant & {
+        categories: (Category & {
+          Product: Product[]
+        })[]
+        products: (Product & {
+          tags: Tag[]
+        })[]
+      })
+    | null
   slug: string
 }) {
   const {
@@ -34,6 +60,7 @@ export default function CustomerForm({
   })
   const router = useRouter()
   const { order } = useContext(OrderContext)
+  const [state, dispatch] = useReducer(reducer, initialState)
   if (!restaurant) return <div className="text-white">no restaurant found</div>
   async function processForm(data: any) {
     console.log(data, "data from customer form")
@@ -60,16 +87,36 @@ export default function CustomerForm({
       console.error(error)
     }
   }
-  console.log(order, "order from customer form")
+  const productsToShow = state.category
+    ? restaurant.products.filter(
+        (product) => product.categoryId === state.category
+      )
+    : restaurant.products
+
   return (
     <div className="px-4 my-auto text-white flex flex-col pb-16">
       <NavBar slug={slug} />
       <div>
         <h2>Categories</h2>
-        <div className="flex gap-4 text-white">
+        <div className="flex gap-4 text-white overflow-x-scroll max-w-none ">
           {restaurant.categories.map((category: Category) => (
-            <div key={category.id}>
-              <h3 className="">{category.name}</h3>
+            <div
+              key={category.id}
+              className={
+                "min-w-fit" +
+                (state.category === category.id ? " text-qpay-cyan" : "")
+              }
+            >
+              <button
+                onClick={() =>
+                  dispatch({
+                    type: "SET_CATEGORYID",
+                    payload: category.id,
+                  })
+                }
+              >
+                <h3>{category.name}</h3>
+              </button>
             </div>
           ))}
         </div>
@@ -77,7 +124,7 @@ export default function CustomerForm({
       <div className="pt-4">
         <form onSubmit={handleSubmit(processForm)}>
           <h2 className="text-2xl pb-4">Products</h2>
-          <CustomerProductList products={restaurant.products} />
+          <CustomerProductList products={productsToShow} />
           {order?.products && (
             <div className="text-qpay-cyan text-md">
               {Array.from(
